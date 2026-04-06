@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演繹的 Web 学習 — 暗号資産ページで学ぶ HTML・CSS・JS</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --surface2: #1e2330;
+    --border: #2a3045;
+    --text: #e2e8f0;
+    --muted: #6b7a99;
+    --html: #f97316;
+    --css: #3b82f6;
+    --js: #eab308;
+    --accent: #22d3ee;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+  }
+  header h1 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  header span {
+    font-size: 13px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(34,211,238,.08);
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(34,211,238,.2);
+  }
+
+  /* ── Stage Tabs ── */
+  .stages {
+    display: flex;
+    gap: 0;
+    padding: 0 32px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .stage-btn {
+    padding: 14px 28px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .03em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stage-btn .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .stage-btn[data-stage="1"] .tag { background: rgba(249,115,22,.15); color: var(--html); }
+  .stage-btn[data-stage="2"] .tag { background: rgba(59,130,246,.15); color: var(--css); }
+  .stage-btn[data-stage="3"] .tag { background: rgba(234,179,8,.15); color: var(--js); }
+  .stage-btn.active { color: var(--text); }
+  .stage-btn[data-stage="1"].active { border-bottom-color: var(--html); }
+  .stage-btn[data-stage="2"].active { border-bottom-color: var(--css); }
+  .stage-btn[data-stage="3"].active { border-bottom-color: var(--js); }
+
+  /* ── Main Layout ── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    overflow: hidden;
+    height: calc(100vh - 110px);
+  }
+
+  /* ── Left: Explanation ── */
+  .explanation {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .principle-box {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .principle-box .label {
+    font-size: 10px;
+    letter-spacing: .12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .s1 .label { color: var(--html); }
+  .s2 .label { color: var(--css); }
+  .s3 .label { color: var(--js); }
+
+  .principle-box h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .principle-box p {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: #a8b8d0;
+  }
+
+  .rules {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rules .rule {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .rule-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .s1 .rule-num { background: rgba(249,115,22,.2); color: var(--html); }
+  .s2 .rule-num { background: rgba(59,130,246,.2); color: var(--css); }
+  .s3 .rule-num { background: rgba(234,179,8,.2); color: var(--js); }
+  .rule-text { font-size: 13px; line-height: 1.7; color: #b0c4de; }
+  .rule-text strong { color: var(--text); }
+
+  /* ── Code Block ── */
+  .code-area {
+    flex: 1;
+    background: #0a0c10;
+  }
+  .code-area pre {
+    padding: 20px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-x: auto;
+    white-space: pre;
+    color: #c9d8ec;
+  }
+  .code-area pre .cm { color: #4a5568; font-style: italic; }
+  .code-area pre .tg { color: #f97316; }
+  .code-area pre .at { color: #60a5fa; }
+  .code-area pre .vl { color: #34d399; }
+  .code-area pre .pr { color: #a78bfa; }
+  .code-area pre .se { color: #f472b6; }
+  .code-area pre .nu { color: #fb923c; }
+  .code-area pre .kw { color: #67e8f9; }
+  .code-area pre .fn { color: #fbbf24; }
+  .code-area pre .st { color: #86efac; }
+
+  /* ── Right: Preview ── */
+  .preview-pane {
+    background: #f8f9fa;
+    overflow-y: auto;
+    position: relative;
+  }
+  .preview-label {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 8px 16px;
+    font-size: 11px;
+    letter-spacing: .08em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(22,25,34,.9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── Preview Content (実際のページ) ── */
+  .preview-inner {
+    padding: 0;
+    min-height: 100%;
+  }
+
+  /* Stage 1: HTML only (browser default styles) */
+  .preview-s1 {
+    padding: 16px;
+    background: white;
+    color: black;
+    font-family: serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .preview-s1 h1 { font-size: 2em; font-weight: bold; }
+  .preview-s1 h2 { font-size: 1.5em; font-weight: bold; margin-top: 1em; }
+  .preview-s1 p { margin: .5em 0; }
+  .preview-s1 ul { margin: .5em 0 .5em 1.5em; }
+  .preview-s1 .badge { background: none; border: none; font-size: 1em; }
+  .preview-s1 table { border-collapse: collapse; width: 100%; }
+  .preview-s1 th, .preview-s1 td { border: 1px solid black; padding: 4px 8px; }
+  .preview-s1 section { margin-bottom: 1em; }
+
+  /* Stage 2: CSS styled */
+  .preview-s2 {
+    background: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: #1a202c;
+  }
+  .preview-s2 .page-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0d1f3c 100%);
+    color: white;
+    padding: 32px 24px;
+  }
+  .preview-s2 .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .preview-s2 .page-header p { font-size: 13px; opacity: .75; }
+  .preview-s2 .page-body { padding: 20px 24px; }
+  .preview-s2 section { margin-bottom: 24px; }
+  .preview-s2 h2 {
+    font-size: 15px; font-weight: 700;
+    color: #1e3a5f;
+    border-left: 3px solid #3b82f6;
+    padding-left: 10px;
+    margin-bottom: 10px;
+  }
+  .preview-s2 p { line-height: 1.8; font-size: 13px; color: #4a5568; }
+  .preview-s2 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .preview-s2 .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #ebf5fb;
+    color: #1e3a5f;
+    border: 1px solid #bee3f8;
+  }
+  .preview-s2 table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .preview-s2 th {
+    background: #1e3a5f; color: white;
+    padding: 8px 12px; text-align: left;
+    font-weight: 600;
+  }
+  .preview-s2 td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
+  .preview-s2 tr:nth-child(even) td { background: #f7fafc; }
+
+  /* Stage 3: JS interactive */
+  .preview-s3 {
+    background: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: #1a202c;
+  }
+  .preview-s3 .page-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0d1f3c 100%);
+    color: white;
+    padding: 32px 24px;
+  }
+  .preview-s3 .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .preview-s3 .page-header p { font-size: 13px; opacity: .75; }
+  .preview-s3 .tab-nav {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 0 24px;
+    background: #f8fafc;
+  }
+  .preview-s3 .tab-btn {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: #6b7280;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all .2s;
+  }
+  .preview-s3 .tab-btn.active {
+    color: #1e3a5f;
+    border-bottom-color: #3b82f6;
+  }
+  .preview-s3 .tab-panel { display: none; padding: 20px 24px; }
+  .preview-s3 .tab-panel.active { display: block; }
+  .preview-s3 h2 {
+    font-size: 15px; font-weight: 700;
+    color: #1e3a5f;
+    border-left: 3px solid #3b82f6;
+    padding-left: 10px;
+    margin-bottom: 10px;
+  }
+  .preview-s3 p { line-height: 1.8; font-size: 13px; color: #4a5568; margin-bottom: 10px; }
+  .preview-s3 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .preview-s3 .badge {
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    background: #ebf5fb; color: #1e3a5f;
+    border: 1px solid #bee3f8; cursor: pointer;
+    transition: all .2s;
+  }
+  
+  .preview-s2 .badge-blue, .preview-s3 .badge-blue   { background: #ebf5fb; color: #1e40af; border-color: #bee3f8; }
+  .preview-s2 .badge-green, .preview-s3 .badge-green  { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+  .preview-s2 .badge-orange, .preview-s3 .badge-orange { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+
+  .preview-s3 .badge:hover { background: #1e3a5f; color: white; }
+  .preview-s3 .tooltip {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #eff6ff;
+    border-left: 3px solid #3b82f6;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #1e40af;
+    line-height: 1.7;
+  }
+  .preview-s3 .tooltip.show { display: block; }
+  .preview-s3 table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .preview-s3 th { background: #1e3a5f; color: white; padding: 8px 12px; text-align: left; font-weight: 600; }
+  .preview-s3 td { padding: 8px 12px; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
+  .preview-s3 tr:nth-child(even) td { background: #f7fafc; }
+
+  /* ── Stage content visibility ── */
+  .stage-content { display: none; }
+  .stage-content.active { display: flex; flex-direction: column; height: 100%; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>演繹的 Web 学習</h1>
+  <span>暗号資産ページで学ぶ HTML → CSS → JS</span>
+</header>
+
+<div class="stages">
+  <button class="stage-btn active" data-stage="1" onclick="setStage(1)">
+    <span class="tag">HTML</span> Stage 1 — 構造
+  </button>
+  <button class="stage-btn" data-stage="2" onclick="setStage(2)">
+    <span class="tag">CSS</span> Stage 2 — 見た目
+  </button>
+  <button class="stage-btn" data-stage="3" onclick="setStage(3)">
+    <span class="tag">JS</span> Stage 3 — 動作
+  </button>
+</div>
+
+<div class="main">
+
+  <!-- ===== LEFT: Explanation ===== -->
+  <div class="explanation">
+
+    <!-- STAGE 1 -->
+    <div class="stage-content s1 active" id="left-1">
+      <div class="principle-box">
+        <div class="label">原理</div>
+        <h2>HTMLはツリー構造で<br>「意味」を記述する</h2>
+        <p>HTMLはページの「骨格」です。スタイルも動作も一切持たず、<strong>コンテンツが何であるか（意味）</strong> だけを表現します。ブラウザはこれをDOMツリーとして解釈します。</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-text"><strong>タグは暗記しない。</strong> 「これは見出しか？本文か？リストか？」という意味から演繹してタグを選ぶ。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-text"><strong>入れ子＝親子関係。</strong> &lt;section&gt;の中に&lt;h2&gt;があるのは「セクションが見出しを含む」という意味の表明。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-text"><strong>ブラウザのデフォルトスタイルがある。</strong> 右のプレビューはCSSゼロの状態。見た目は素朴でも構造は完成している。</div>
+        </div>
+      </div>
+      <div class="code-area">
+        <pre><span class="cm">&lt;!-- HTMLのみ。CSSもJSも一切なし --&gt;</span>
+
+<span class="tg">&lt;header&gt;</span>
+  <span class="tg">&lt;h1&gt;</span>暗号資産とは<span class="tg">&lt;/h1&gt;</span>
+  <span class="tg">&lt;p&gt;</span>Web3時代の新しいお金の形<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;/header&gt;</span>
+
+<span class="tg">&lt;main&gt;</span>
+  <span class="tg">&lt;section&gt;</span>
+    <span class="tg">&lt;h2&gt;</span>定義<span class="tg">&lt;/h2&gt;</span>
+    <span class="tg">&lt;p&gt;</span>暗号資産とは、ブロックチェーン技術を
+    基盤とするデジタル資産です。<span class="tg">&lt;/p&gt;</span>
+    <span class="tg">&lt;div&gt;</span>
+      <span class="tg">&lt;span&gt;</span>分散型<span class="tg">&lt;/span&gt;</span>
+      <span class="tg">&lt;span&gt;</span>ブロックチェーン<span class="tg">&lt;/span&gt;</span>
+      <span class="tg">&lt;span&gt;</span>P2P<span class="tg">&lt;/span&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+  <span class="tg">&lt;/section&gt;</span>
+
+  <span class="tg">&lt;section&gt;</span>
+    <span class="tg">&lt;h2&gt;</span>主な種類<span class="tg">&lt;/h2&gt;</span>
+    <span class="tg">&lt;table&gt;</span>
+      <span class="tg">&lt;tr&gt;&lt;th&gt;</span>名称<span class="tg">&lt;/th&gt;&lt;th&gt;</span>特徴<span class="tg">&lt;/th&gt;&lt;/tr&gt;</span>
+      <span class="tg">&lt;tr&gt;&lt;td&gt;</span>Bitcoin<span class="tg">&lt;/td&gt;</span>
+          <span class="tg">&lt;td&gt;</span>最初の暗号資産<span class="tg">&lt;/td&gt;&lt;/tr&gt;</span>
+      <span class="tg">&lt;tr&gt;&lt;td&gt;</span>Ethereum<span class="tg">&lt;/td&gt;</span>
+          <span class="tg">&lt;td&gt;</span>スマートコントラクト<span class="tg">&lt;/td&gt;&lt;/tr&gt;</span>
+    <span class="tg">&lt;/table&gt;</span>
+  <span class="tg">&lt;/section&gt;</span>
+<span class="tg">&lt;/main&gt;</span>
+
+<span class="cm">&lt;!-- ↑ これだけで「構造」は完成 --&gt;</span></pre>
+      </div>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="stage-content s2" id="left-2">
+      <div class="principle-box">
+        <div class="label">原理</div>
+        <h2>CSSはカスケードと<br>ボックスモデルで制御する</h2>
+        <p>CSSはHTMLの構造に<strong>視覚的な意味</strong>を与えます。「どのルールが勝つか」は詳細度（Specificity）で決まり、「どこに配置するか」はボックスモデルで決まります。</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-text"><strong>カスケードの法則：</strong> 同じプロパティが競合したとき、<code>!important &gt; インライン &gt; ID &gt; クラス &gt; タグ</code> の順で勝者が決まる。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-text"><strong>ボックスモデル：</strong> すべての要素は <code>content + padding + border + margin</code> の箱。レイアウトの問題はこの箱のどこかに原因がある。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-text"><strong>Flexboxは配置の抽象化：</strong> 子要素を横・縦に並べる制御をFlexboxに委譲できる。親に<code>display:flex</code>を書くだけで子が整列する。</div>
+        </div>
+      </div>
+      <div class="code-area">
+        <pre><span class="cm">/* 詳細度: タグ(0,0,1) &lt; クラス(0,1,0) */</span>
+
+<span class="se">.page-header</span> {
+  <span class="pr">background</span>: <span class="fn">linear-gradient</span>(
+    <span class="nu">135deg</span>, <span class="vl">#1e3a5f</span>, <span class="vl">#0d1f3c</span>
+  );
+  <span class="pr">color</span>: <span class="vl">white</span>;
+  <span class="pr">padding</span>: <span class="nu">32px 24px</span>; <span class="cm">/* ボックスモデル */</span>
+}
+
+<span class="cm">/* Flexboxで横並び */</span>
+<span class="se">.badges</span> {
+  <span class="pr">display</span>: <span class="vl">flex</span>;
+  <span class="pr">gap</span>: <span class="nu">8px</span>;
+  <span class="pr">flex-wrap</span>: <span class="vl">wrap</span>;
+}
+
+<span class="se">.badge</span> {
+  <span class="pr">padding</span>: <span class="nu">4px 12px</span>;
+  <span class="pr">border-radius</span>: <span class="nu">20px</span>;
+  <span class="pr">background</span>: <span class="vl">#ebf5fb</span>;
+  <span class="pr">border</span>: <span class="nu">1px</span> <span class="vl">solid</span> <span class="vl">#bee3f8</span>;
+}
+
+<span class="cm">/* テーブルの縞模様
+   :nth-child は疑似クラス → 詳細度(0,1,0) */</span>
+<span class="se">tr:nth-child(even) td</span> {
+  <span class="pr">background</span>: <span class="vl">#f7fafc</span>;
+}</pre>
+      </div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="stage-content s3" id="left-3">
+      <div class="principle-box">
+        <div class="label">原理</div>
+        <h2>JavaScriptはイベントに<br>反応してDOMを変更する</h2>
+        <p>JSのすべての操作は <strong>①イベントを待ち受ける → ②DOMを選択する → ③状態を変更する</strong> の3ステップに還元できます。これが分かれば「なぜ動くか」が演繹できます。</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-text"><strong>DOMはツリー。</strong> <code>document.querySelector()</code> はCSSセレクタと同じ記法で要素を「選ぶ」。選べなければ何もできない。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-text"><strong>イベントリスナーは「待ち受け係」。</strong> <code>addEventListener('click', fn)</code> は「クリックが来たらfnを呼べ」という命令。イベントが来るまでfnは実行されない。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-text"><strong>classListでCSSに委譲。</strong> JSは直接スタイルを書かず、クラスを付け外しするだけでよい。見た目の制御はCSSに戻す設計が保守性が高い。</div>
+        </div>
+      </div>
+      <div class="code-area">
+        <pre><span class="cm">// ① イベント待ち受け（タブ切り替え）</span>
+<span class="kw">const</span> <span class="fn">buttons</span> = <span class="fn">document</span>.<span class="fn">querySelectorAll</span>(<span class="st">'.tab-btn'</span>);
+
+buttons.<span class="fn">forEach</span>(btn => {
+  btn.<span class="fn">addEventListener</span>(<span class="st">'click'</span>, () => {
+
+    <span class="cm">// ② DOM選択 → クラス除去</span>
+    <span class="fn">document</span>.<span class="fn">querySelectorAll</span>(<span class="st">'.tab-btn'</span>)
+      .<span class="fn">forEach</span>(b => b.<span class="fn">classList</span>.<span class="fn">remove</span>(<span class="st">'active'</span>));
+    <span class="fn">document</span>.<span class="fn">querySelectorAll</span>(<span class="st">'.tab-panel'</span>)
+      .<span class="fn">forEach</span>(p => p.<span class="fn">classList</span>.<span class="fn">remove</span>(<span class="st">'active'</span>));
+
+    <span class="cm">// ③ 状態変更（classListでCSSに委譲）</span>
+    btn.<span class="fn">classList</span>.<span class="fn">add</span>(<span class="st">'active'</span>);
+    <span class="kw">const</span> target = btn.<span class="fn">dataset</span>.tab;
+    <span class="fn">document</span>.<span class="fn">getElementById</span>(target)
+      .<span class="fn">classList</span>.<span class="fn">add</span>(<span class="st">'active'</span>);
+  });
+});
+
+<span class="cm">// バッジクリックでツールチップ表示</span>
+<span class="fn">document</span>.<span class="fn">querySelectorAll</span>(<span class="st">'.badge'</span>).<span class="fn">forEach</span>(b => {
+  b.<span class="fn">addEventListener</span>(<span class="st">'click'</span>, () => {
+    <span class="kw">const</span> tip = b.<span class="fn">nextElementSibling</span>;
+    tip.<span class="fn">classList</span>.<span class="fn">toggle</span>(<span class="st">'show'</span>);
+  });
+});</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RIGHT: Preview ===== -->
+  <div class="preview-pane">
+    <div class="preview-label">▶ ブラウザプレビュー</div>
+    <div class="preview-inner">
+
+      <!-- STAGE 1 Preview -->
+      <div class="preview-s1 stage-content active" id="prev-1">
+        <header>
+          <h1>暗号資産とは</h1>
+          <p>Web3時代の新しいお金の形</p>
+        </header>
+        <main>
+          <section>
+            <h2>定義</h2>
+            <p>暗号資産とは、ブロックチェーン技術を基盤とするデジタル資産です。</p>
+            <div class="badge-area">
+              <span class="badge">分散型</span>
+              <span class="badge">ブロックチェーン</span>
+              <span class="badge">P2P</span>
+            </div>
+            
+          </section>
+          <section>
+            <h2>主な種類</h2>
+            <table>
+              <tr><th>名称</th><th>特徴</th><th>日本での分類</th></tr>
+              <tr><td>Bitcoin (BTC)</td><td>最初の暗号資産</td><td>暗号資産</td></tr>
+              <tr><td>Ethereum (ETH)</td><td>スマートコントラクト基盤</td><td>暗号資産</td></tr>
+              <tr><td>USDC</td><td>米ドル連動ステーブルコイン</td><td>電子決済手段</td></tr>
+            </table>
+          </section>
+          <section>
+            <h2>税務上の取扱い</h2>
+            <p>個人が暗号資産を売却・使用した場合、その利益は<strong>雑所得</strong>として総合課税の対象となります。</p>
+          </section>
+        </main>
+      </div>
+
+      <!-- STAGE 2 Preview -->
+      <div class="preview-s2 stage-content" id="prev-2">
+        <div class="page-header">
+          <h1>暗号資産とは</h1>
+          <p>Web3時代の新しいお金の形</p>
+        </div>
+        <div class="page-body">
+          <section>
+            <h2>定義</h2>
+            <p>暗号資産とは、ブロックチェーン技術を基盤とするデジタル資産です。</p>
+            <div class="badges">
+              <span class="badge badge-blue">分散型</span>
+              <span class="badge badge-green">ブロックチェーン</span>
+              <span class="badge badge-orange">P2P</span>
+            </div>
+          </section>
+          <section>
+            <h2>主な種類</h2>
+            <table>
+              <tr><th>名称</th><th>特徴</th><th>日本での分類</th></tr>
+              <tr><td>Bitcoin (BTC)</td><td>最初の暗号資産</td><td>暗号資産</td></tr>
+              <tr><td>Ethereum (ETH)</td><td>スマートコントラクト基盤</td><td>暗号資産</td></tr>
+              <tr><td>USDC</td><td>米ドル連動ステーブルコイン</td><td>電子決済手段</td></tr>
+            </table>
+          </section>
+          <section>
+            <h2>税務上の取扱い</h2>
+            <p>個人が暗号資産を売却・使用した場合、その利益は<strong>雑所得</strong>として総合課税の対象となります。</p>
+          </section>
+        </div>
+      </div>
+
+      <!-- STAGE 3 Preview -->
+      <div class="preview-s3 stage-content" id="prev-3">
+        <div class="page-header">
+          <h1>暗号資産とは</h1>
+          <p>Web3時代の新しいお金の形</p>
+        </div>
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="tab-def">定義</button>
+          <button class="tab-btn" data-tab="tab-types">種類</button>
+          <button class="tab-btn" data-tab="tab-tax">税務</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-def">
+          <h2>定義</h2>
+          <p>暗号資産とは、ブロックチェーン技術を基盤とするデジタル資産です。バッジをクリックすると解説が表示されます。</p>
+          <div class="badges">
+            <span class="badge badge-blue" id="b-decen">分散型</span>
+          </div>
+          <div class="tooltip" id="tip-decen">中央管理者が存在せず、ネットワーク参加者全員でデータを共有・検証します。</div>
+          <div class="badges" style="margin-top:8px">
+            <span class="badge badge-green" id="b-bc">ブロックチェーン</span>
+          </div>
+          <div class="tooltip" id="tip-bc">取引データをブロックに記録し、チェーン状につなぐことで改ざんを困難にする技術です。</div>
+          <div class="badges" style="margin-top:8px">
+            <span class="badge badge-orange" id="b-p2p">P2P</span>
+          </div>
+          <div class="tooltip" id="tip-p2p">銀行などの仲介者なしに、個人間で直接取引（Peer to Peer）が可能です。</div>
+        </div>
+
+        <div class="tab-panel" id="tab-types">
+          <h2>主な種類</h2>
+          <table>
+            <tr><th>名称</th><th>特徴</th><th>日本での分類</th></tr>
+            <tr><td>Bitcoin (BTC)</td><td>最初の暗号資産</td><td>暗号資産</td></tr>
+            <tr><td>Ethereum (ETH)</td><td>スマートコントラクト基盤</td><td>暗号資産</td></tr>
+            <tr><td>USDC</td><td>米ドル連動ステーブルコイン</td><td>電子決済手段</td></tr>
+          </table>
+        </div>
+
+        <div class="tab-panel" id="tab-tax">
+          <h2>税務上の取扱い</h2>
+          <p>個人が暗号資産を売却・使用した場合、その利益は<strong>雑所得</strong>として総合課税の対象となります。</p>
+          <p>令和5年度税制改正では、暗号資産の期末時価評価が法人税法上の取扱いとして明確化されました。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Stage switching =====
+function setStage(n) {
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-stage="${n}"]`).classList.add('active');
+
+  document.querySelectorAll('.stage-content').forEach(el => el.classList.remove('active'));
+  document.getElementById(`left-${n}`).classList.add('active');
+  document.getElementById(`prev-${n}`).classList.add('active');
+}
+
+// ===== Stage 3: Tab switching =====
+document.querySelectorAll('.preview-s3 .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preview-s3 .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.preview-s3 .tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ===== Stage 3: Badge tooltips =====
+[['b-decen','tip-decen'],['b-bc','tip-bc'],['b-p2p','tip-p2p']].forEach(([bid, tid]) => {
+  document.getElementById(bid).addEventListener('click', () => {
+    const tip = document.getElementById(tid);
+    tip.classList.toggle('show');
+  });
+});
+</script>
+</body>
+</html>
