@@ -31,221 +31,232 @@
     padding: 32px 24px;
   }
 
-  header {
-    margin-bottom: 32px;
-  }
-  header h1 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  header p {
-    font-size: 13px;
-    color: var(--muted);
-  }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  header p { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 
-  /* Levels */
+  /* Level Cards */
   .levels {
     display: flex;
     gap: 12px;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     flex-wrap: wrap;
   }
   .level-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 16px 20px;
+    padding: 14px 18px;
     flex: 1;
-    min-width: 200px;
+    min-width: 180px;
   }
-  .level-card .label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .level-card h3 {
-    font-size: 14px;
-    font-weight: 600;
+  .level-card .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
     margin-bottom: 4px;
   }
-  .level-card p {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .level-card .deadline {
-    margin-top: 10px;
-    font-size: 11px;
+  .level-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .level-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .level-card .dl {
+    margin-top: 8px; font-size: 11px;
     font-family: 'JetBrains Mono', monospace;
-    padding: 2px 8px;
-    border-radius: 4px;
-    display: inline-block;
+    padding: 2px 8px; border-radius: 4px; display: inline-block;
   }
-  .la .label { color: var(--html); }
-  .la .deadline { background: rgba(249,115,22,.15); color: var(--html); }
-  .lb .label { color: var(--css); }
-  .lb .deadline { background: rgba(59,130,246,.15); color: var(--css); }
-  .lc .label { color: var(--js); }
-  .lc .deadline { background: rgba(234,179,8,.15); color: var(--js); }
+  .la .lbl, .la .dl { color: var(--html); }
+  .la .dl { background: rgba(249,115,22,.12); }
+  .lb .lbl, .lb .dl { color: var(--css); }
+  .lb .dl { background: rgba(59,130,246,.12); }
+  .lc .lbl, .lc .dl { color: var(--js); }
+  .lc .dl { background: rgba(234,179,8,.12); }
 
-  /* Gantt */
-  .gantt-wrapper {
+  /* Gantt container */
+  .gantt-wrap {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
   }
-  .gantt-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 600;
+  .gantt-title {
+    padding: 14px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
     color: var(--muted);
-    letter-spacing: .06em;
-    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
   }
-
-  .gantt {
-    padding: 20px;
+  .gantt-scroll {
     overflow-x: auto;
+    padding: 20px 20px 20px 0;
+  }
+  .gantt-inner {
+    min-width: 1100px;
+    position: relative;
   }
 
-  .gantt-month {
-    margin-bottom: 28px;
+  /* Level bands */
+  .band-row {
+    display: flex;
+    align-items: stretch;
+    height: 24px;
+    margin-bottom: 2px;
   }
-  .gantt-month-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 12px;
+  .band-label {
+    width: 210px;
+    flex-shrink: 0;
+  }
+  .band-track {
+    flex: 1;
+    position: relative;
+  }
+  .band {
+    position: absolute;
+    top: 0; bottom: 0;
+    border-radius: 4px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 700;
     letter-spacing: .06em;
   }
 
-  .gantt-row {
+  /* Date header */
+  .date-header {
+    display: flex;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .date-label-spacer { width: 210px; flex-shrink: 0; }
+  .date-ticks {
+    flex: 1;
+    position: relative;
+    height: 20px;
+  }
+  .tick {
+    position: absolute;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .tick.month {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+  }
+
+  /* Grid lines */
+  .grid-lines {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+  .grid-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+    opacity: 0.4;
+  }
+  .grid-line.month-line {
+    background: var(--border);
+    opacity: 0.8;
+  }
+
+  /* Task rows */
+  .task-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-    min-width: 600px;
+    margin-bottom: 6px;
+    height: 28px;
   }
-  .gantt-row-label {
-    width: 160px;
+  .task-label {
+    width: 210px;
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     text-align: right;
+    padding-right: 14px;
   }
-  .gantt-track {
+  .task-track {
     flex: 1;
     height: 28px;
-    background: var(--surface2);
-    border-radius: 6px;
     position: relative;
-    border: 1px solid var(--border);
   }
-  .gantt-bar {
-    height: 100%;
-    border-radius: 6px;
+  .task-bar {
+    position: absolute;
+    top: 3px; bottom: 3px;
+    border-radius: 5px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 600;
+    white-space: nowrap; overflow: hidden;
+    min-width: 4px;
+  }
+  .task-bar.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.15) !important;
+    color: var(--muted) !important;
+  }
+
+  /* Milestone row */
+  .ms-row {
     display: flex;
     align-items: center;
-    padding: 0 10px;
-    font-size: 11px;
-    font-weight: 600;
-    position: absolute;
-    white-space: nowrap;
-    overflow: hidden;
+    height: 32px;
+    margin-top: 4px;
   }
-
-  /* 日付グリッド線 */
-  .gantt-dates {
-    display: flex;
-    margin-left: 172px;
-    margin-bottom: 4px;
-    min-width: 428px;
-  }
-  .gantt-date-tick {
-    font-size: 10px;
-    color: var(--border);
-    font-family: 'JetBrains Mono', monospace;
+  .ms-track {
     flex: 1;
-    text-align: center;
+    position: relative;
+    height: 32px;
+  }
+  .ms-flag {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .ms-diamond {
+    width: 10px; height: 10px;
+    border: 2px solid;
+    transform: rotate(45deg);
+    background: var(--bg);
+  }
+  .ms-text {
+    font-size: 10px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    margin-top: 4px;
   }
 
-  /* 凡例 */
+  /* Legend */
   .legend {
-    display: flex;
-    gap: 20px;
-    padding: 16px 20px;
+    display: flex; gap: 18px;
+    padding: 12px 20px;
     border-top: 1px solid var(--border);
     flex-wrap: wrap;
   }
   .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--muted);
+    display: flex; align-items: center;
+    gap: 6px; font-size: 11px; color: var(--muted);
   }
   .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
+    width: 12px; height: 10px; border-radius: 3px;
   }
-
-  /* milestone */
-  .milestone-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-    min-width: 600px;
-  }
-  .milestone-label {
-    width: 160px;
-    flex-shrink: 0;
-    font-size: 12px;
-    color: var(--accent);
-    text-align: right;
-    font-weight: 600;
-  }
-  .milestone-track {
-    flex: 1;
-    height: 28px;
-    position: relative;
-  }
-  .milestone-marker {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid;
-    background: var(--bg);
-  }
-  .milestone-text {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 10px;
-    font-weight: 700;
-    white-space: nowrap;
-    margin-left: 4px;
+  .legend-dot.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.2);
   }
 
   .note {
-    margin-top: 20px;
-    padding: 12px 16px;
+    margin-top: 16px;
+    padding: 10px 14px;
     background: rgba(234,179,8,.06);
     border: 1px solid rgba(234,179,8,.2);
     border-radius: 6px;
-    font-size: 12px;
-    color: #a8b8d0;
-    line-height: 1.7;
+    font-size: 11px; color: #a8b8d0; line-height: 1.7;
   }
   .note strong { color: var(--js); }
 </style>
@@ -257,252 +268,231 @@
   <p>HTML → CSS → JS の段階的学習ロードマップ</p>
 </header>
 
-<!-- Level Cards -->
 <div class="levels">
   <div class="level-card la">
-    <div class="label">Level A</div>
+    <div class="lbl">Level A — 1ヶ月</div>
     <h3>テンプレートをカスタマイズ</h3>
     <p>文字・色・画像を差し替えて<br>自分のページを作れる</p>
-    <span class="deadline">目標: 2025年4月末</span>
+    <span class="dl">4/6 〜 4/30</span>
   </div>
   <div class="level-card lb">
-    <div class="label">Level B</div>
+    <div class="lbl">Level B — 2ヶ月</div>
     <h3>ゼロからページを書く</h3>
-    <p>テンプレートなしで<br>シンプルなページを構築できる</p>
-    <span class="deadline">目標: 2025年6月末</span>
+    <p>テンプレートなしでシンプルな<br>ページを構築できる</p>
+    <span class="dl">5/1 〜 6/30</span>
   </div>
   <div class="level-card lc">
-    <div class="label">Level C</div>
+    <div class="lbl">Level C — 2ヶ月</div>
     <h3>凝ったデザイン・動きを作る</h3>
     <p>複雑なレイアウトや<br>インタラクションを実装できる</p>
-    <span class="deadline">目標: 2025年8月末</span>
+    <span class="dl">7/1 〜 8/31</span>
   </div>
 </div>
 
-<!-- Gantt -->
-<div class="gantt-wrapper">
-  <div class="gantt-header">ガントチャート</div>
-  <div class="gantt">
-
-    <!-- 4月 -->
-    <div class="gantt-month">
-      <div class="gantt-month-label">APRIL 2025</div>
-
-      <!-- 日付ラベル: 4/1〜4/30を31マスとして表現 -->
-      <div class="gantt-dates">
-        <div class="gantt-date-tick">1</div>
-        <div class="gantt-date-tick">8</div>
-        <div class="gantt-date-tick">15</div>
-        <div class="gantt-date-tick">22</div>
-        <div class="gantt-date-tick">30</div>
+<div class="gantt-wrap">
+  <div class="gantt-title">ガントチャート（2025年4月〜8月）</div>
+  <div class="gantt-scroll">
+    <div class="gantt-inner" id="gantt-inner">
+      <!-- 日付ヘッダー -->
+      <div class="date-header">
+        <div class="date-label-spacer"></div>
+        <div class="date-ticks" id="date-ticks"></div>
       </div>
-
-      <!-- HTML基礎（PC）: 4/6〜4/8 → 5日目〜8日目 -->
-      <div class="gantt-row">
-        <div class="gantt-row-label">HTML — 構造（PC）</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: calc(5/30*100%);
-            width: calc(3/30*100%);
-            background: rgba(249,115,22,0.7);
-            color: white;
-          ">HTML</div>
-        </div>
-      </div>
-
-      <!-- スマホ学習期間: 4/9〜4/14 -->
-      <div class="gantt-row">
-        <div class="gantt-row-label">スマホ学習（出張）</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: calc(8/30*100%);
-            width: calc(6/30*100%);
-            background: rgba(107,122,153,0.4);
-            color: #a8b8d0;
-            border: 1px dashed #6b7a99;
-          ">概念・読み込み</div>
-        </div>
-      </div>
-
-      <!-- HTML応用: 4/15〜4/19 -->
-      <div class="gantt-row">
-        <div class="gantt-row-label">HTML — 応用（PC）</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: calc(14/30*100%);
-            width: calc(5/30*100%);
-            background: rgba(249,115,22,0.7);
-            color: white;
-          ">HTML</div>
-        </div>
-      </div>
-
-      <!-- CSS基礎: 4/20〜4/26 -->
-      <div class="gantt-row">
-        <div class="gantt-row-label">CSS — 色・フォント・余白</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: calc(19/30*100%);
-            width: calc(7/30*100%);
-            background: rgba(59,130,246,0.7);
-            color: white;
-          ">CSS</div>
-        </div>
-      </div>
-
-      <!-- 実践: 4/27〜4/30 -->
-      <div class="gantt-row">
-        <div class="gantt-row-label">実践 — テンプレート改造</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: calc(26/30*100%);
-            width: calc(4/30*100%);
-            background: rgba(34,197,94,0.7);
-            color: white;
-          ">実践</div>
-        </div>
-      </div>
-
-      <!-- Level A マイルストーン -->
-      <div class="milestone-row">
-        <div class="milestone-label">Level A 達成</div>
-        <div class="milestone-track">
-          <div class="milestone-marker" style="
-            left: calc(29/30*100%);
-            border-color: var(--html);
-          "></div>
-          <div class="milestone-text" style="
-            left: calc(29/30*100% + 10px);
-            color: var(--html);
-          ">4/30</div>
-        </div>
+      <!-- Level帯 -->
+      <div id="bands"></div>
+      <!-- グリッド線（タスクの後ろに描画するためCSSで重ねる） -->
+      <!-- タスク行 -->
+      <div id="tasks" style="position:relative"></div>
+      <!-- マイルストーン -->
+      <div class="ms-row" id="ms-row">
+        <div class="task-label" style="font-size:10px;color:var(--accent);font-weight:700;">達成目標</div>
+        <div class="ms-track" id="ms-track"></div>
       </div>
     </div>
-
-    <!-- 5月〜6月 -->
-    <div class="gantt-month">
-      <div class="gantt-month-label">MAY – JUNE 2025</div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">CSS — Flexbox・レイアウト</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 0%;
-            width: 38%;
-            background: rgba(59,130,246,0.7);
-            color: white;
-          ">CSS レイアウト</div>
-        </div>
-      </div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">JS — 基礎・DOM操作</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 35%;
-            width: 40%;
-            background: rgba(234,179,8,0.7);
-            color: #1a1a00;
-          ">JavaScript</div>
-        </div>
-      </div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">実践 — ページ制作</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 70%;
-            width: 30%;
-            background: rgba(34,197,94,0.7);
-            color: white;
-          ">実践</div>
-        </div>
-      </div>
-
-      <div class="milestone-row">
-        <div class="milestone-label">Level B 達成</div>
-        <div class="milestone-track">
-          <div class="milestone-marker" style="
-            left: 99%;
-            border-color: var(--css);
-          "></div>
-          <div class="milestone-text" style="
-            left: calc(99% - 32px);
-            color: var(--css);
-          ">6/30</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 7月〜8月 -->
-    <div class="gantt-month">
-      <div class="gantt-month-label">JULY – AUGUST 2025</div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">JS — 応用・API連携</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 0%;
-            width: 45%;
-            background: rgba(234,179,8,0.7);
-            color: #1a1a00;
-          ">JavaScript 応用</div>
-        </div>
-      </div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">CSS — アニメーション・レスポンシブ</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 20%;
-            width: 45%;
-            background: rgba(59,130,246,0.7);
-            color: white;
-          ">CSS 発展</div>
-        </div>
-      </div>
-
-      <div class="gantt-row">
-        <div class="gantt-row-label">実践 — 本番サイト制作</div>
-        <div class="gantt-track">
-          <div class="gantt-bar" style="
-            left: 60%;
-            width: 40%;
-            background: rgba(34,197,94,0.7);
-            color: white;
-          ">実践</div>
-        </div>
-      </div>
-
-      <div class="milestone-row">
-        <div class="milestone-label">Level C 達成</div>
-        <div class="milestone-track">
-          <div class="milestone-marker" style="
-            left: 99%;
-            border-color: var(--js);
-          "></div>
-          <div class="milestone-text" style="
-            left: calc(99% - 32px);
-            color: var(--js);
-          ">8/31</div>
-        </div>
-      </div>
-    </div>
-
   </div>
-
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="background:rgba(249,115,22,0.7)"></div>HTML</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(59,130,246,0.7)"></div>CSS</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(234,179,8,0.7)"></div>JavaScript</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(34,197,94,0.7)"></div>実践</div>
-    <div class="legend-item"><div class="legend-dot" style="background:rgba(107,122,153,0.4); border:1px dashed #6b7a99"></div>スマホ学習</div>
+    <div class="legend-item"><div class="legend-dot dashed"></div>スマホ学習（出張）</div>
   </div>
 </div>
 
 <div class="note">
-  <strong>4/9〜4/14（出張）:</strong> PCなし。スマホ＋claude.aiで概念学習・コード読み込みを継続。GitHubブラウザ編集で小さな変更も可能。
+  <strong>4/9〜4/14（出張）:</strong> PCなし。スマホ＋claude.aiで概念学習・コード読み込みを継続。
 </div>
 
+<script>
+const START  = new Date('2025-04-01');
+const END    = new Date('2025-08-31');
+const TOTAL  = Math.round((END - START) / 86400000) + 1; // 153日
+
+function dayOf(dateStr) {
+  return Math.round((new Date(dateStr) - START) / 86400000);
+}
+function pct(day) {
+  return (day / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+function widthPct(startStr, endStr) {
+  const days = Math.round((new Date(endStr) - new Date(startStr)) / 86400000) + 1;
+  return (days / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+
+/* ── 日付ティック ── */
+const tickEl = document.getElementById('date-ticks');
+// 月の初日
+const monthStarts = [
+  { d: '2025-04-01', label: 'APR' },
+  { d: '2025-05-01', label: 'MAY' },
+  { d: '2025-06-01', label: 'JUN' },
+  { d: '2025-07-01', label: 'JUL' },
+  { d: '2025-08-01', label: 'AUG' },
+];
+monthStarts.forEach(m => {
+  const el = document.createElement('div');
+  el.className = 'tick month';
+  el.style.left = pct(dayOf(m.d));
+  el.textContent = m.label;
+  tickEl.appendChild(el);
+});
+// 週ごとの日付（月曜または7日刻み）
+for (let d = 7; d < TOTAL; d += 7) {
+  const date = new Date(START.getTime() + d * 86400000);
+  const mo = date.getMonth() + 1;
+  const da = date.getDate();
+  // 月初と重なったらスキップ
+  if (da <= 3) continue;
+  const el = document.createElement('div');
+  el.className = 'tick';
+  el.style.left = pct(d);
+  el.textContent = `${mo}/${da}`;
+  tickEl.appendChild(el);
+}
+
+/* ── グリッド線をタスクエリアに追加 ── */
+function addGridLines(container) {
+  const grid = document.createElement('div');
+  grid.className = 'grid-lines';
+  grid.style.cssText = 'position:absolute;top:0;bottom:0;left:0;right:0;pointer-events:none;';
+  // 週線
+  for (let d = 7; d < TOTAL; d += 7) {
+    const line = document.createElement('div');
+    line.className = 'grid-line';
+    line.style.left = pct(d);
+    grid.appendChild(line);
+  }
+  // 月線
+  monthStarts.forEach(m => {
+    const line = document.createElement('div');
+    line.className = 'grid-line month-line';
+    line.style.left = pct(dayOf(m.d));
+    grid.appendChild(line);
+  });
+  container.style.position = 'relative';
+  container.insertBefore(grid, container.firstChild);
+}
+
+/* ── Level帯 ── */
+const bands = [
+  { start: '2025-04-01', end: '2025-04-30', color: 'rgba(249,115,22,0.07)', label: 'Level A', textColor: '#f97316' },
+  { start: '2025-05-01', end: '2025-06-30', color: 'rgba(59,130,246,0.07)',  label: 'Level B', textColor: '#3b82f6' },
+  { start: '2025-07-01', end: '2025-08-31', color: 'rgba(234,179,8,0.07)',   label: 'Level C', textColor: '#eab308' },
+];
+const bandsEl = document.getElementById('bands');
+const bandRow = document.createElement('div');
+bandRow.className = 'band-row';
+const bandSpacer = document.createElement('div');
+bandSpacer.className = 'band-label';
+const bandTrack = document.createElement('div');
+bandTrack.className = 'band-track';
+bandTrack.style.cssText = 'flex:1;position:relative;height:24px;';
+bands.forEach(b => {
+  const el = document.createElement('div');
+  el.className = 'band';
+  el.style.left  = pct(dayOf(b.start));
+  el.style.width = widthPct(b.start, b.end);
+  el.style.background = b.color;
+  el.style.color = b.textColor;
+  el.style.borderTop = `1px solid ${b.textColor}33`;
+  el.textContent = b.label;
+  bandTrack.appendChild(el);
+});
+bandRow.appendChild(bandSpacer);
+bandRow.appendChild(bandTrack);
+bandsEl.appendChild(bandRow);
+
+/* ── タスク ── */
+const tasks = [
+  { label: 'HTML — 構造（PC）',           start: '2025-04-06', end: '2025-04-08', bg: 'rgba(249,115,22,0.75)', fg: 'white' },
+  { label: 'スマホ学習（出張）',           start: '2025-04-09', end: '2025-04-14', bg: '', fg: '', dashed: true },
+  { label: 'HTML — 応用（PC）',            start: '2025-04-15', end: '2025-04-19', bg: 'rgba(249,115,22,0.75)', fg: 'white' },
+  { label: 'CSS — 色・フォント・余白',     start: '2025-04-20', end: '2025-04-26', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
+  { label: '実践 — テンプレート改造',      start: '2025-04-27', end: '2025-04-30', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
+  { label: 'CSS — Flexbox・レイアウト',    start: '2025-05-01', end: '2025-06-15', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
+  { label: 'JS — 基礎・DOM操作',           start: '2025-06-01', end: '2025-06-25', bg: 'rgba(234,179,8,0.85)',   fg: '#1a1200' },
+  { label: '実践 — ページ制作',            start: '2025-06-16', end: '2025-06-30', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
+  { label: 'JS — 応用・API連携',           start: '2025-07-01', end: '2025-08-10', bg: 'rgba(234,179,8,0.85)',   fg: '#1a1200' },
+  { label: 'CSS — アニメーション・レスポンシブ', start: '2025-07-15', end: '2025-08-20', bg: 'rgba(59,130,246,0.75)', fg: 'white' },
+  { label: '実践 — 本番サイト制作',        start: '2025-08-01', end: '2025-08-31', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
+];
+
+const tasksEl = document.getElementById('tasks');
+addGridLines(tasksEl);
+
+tasks.forEach(t => {
+  const row = document.createElement('div');
+  row.className = 'task-row';
+
+  const lbl = document.createElement('div');
+  lbl.className = 'task-label';
+  lbl.textContent = t.label;
+
+  const track = document.createElement('div');
+  track.className = 'task-track';
+
+  const bar = document.createElement('div');
+  bar.className = 'task-bar' + (t.dashed ? ' dashed' : '');
+  bar.style.left  = pct(dayOf(t.start));
+  bar.style.width = widthPct(t.start, t.end);
+  if (!t.dashed) {
+    bar.style.background = t.bg;
+    bar.style.color = t.fg;
+  }
+  bar.textContent = t.label;
+
+  track.appendChild(bar);
+  row.appendChild(lbl);
+  row.appendChild(track);
+  tasksEl.appendChild(row);
+});
+
+/* ── マイルストーン ── */
+const milestones = [
+  { date: '2025-04-30', label: 'Level A', color: '#f97316' },
+  { date: '2025-06-30', label: 'Level B', color: '#3b82f6' },
+  { date: '2025-08-31', label: 'Level C', color: '#eab308' },
+];
+
+const msTrack = document.getElementById('ms-track');
+milestones.forEach(m => {
+  const flag = document.createElement('div');
+  flag.className = 'ms-flag';
+  flag.style.left = pct(dayOf(m.date));
+
+  const diamond = document.createElement('div');
+  diamond.className = 'ms-diamond';
+  diamond.style.borderColor = m.color;
+
+  const text = document.createElement('div');
+  text.className = 'ms-text';
+  text.textContent = m.label;
+  text.style.color = m.color;
+
+  flag.appendChild(diamond);
+  flag.appendChild(text);
+  msTrack.appendChild(flag);
+});
+</script>
 </body>
 </html>
