@@ -63,6 +63,16 @@
   }
   .la .lbl, .la .dl { color: var(--html); }
   .la .dl { background: rgba(249,115,22,.12); }
+  .achieved { border-color: var(--green); position: relative; }
+  .achieved::after {
+    content: '✓ 達成';
+    position: absolute; top: 12px; right: 12px;
+    font-size: 11px; font-weight: 700;
+    color: var(--green);
+    background: rgba(34,197,94,.12);
+    padding: 2px 8px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
   .lb .lbl, .lb .dl { color: var(--css); }
   .lb .dl { background: rgba(59,130,246,.12); }
   .lc .lbl, .lc .dl { color: var(--js); }
@@ -249,6 +259,34 @@
     border: 1px dashed rgba(107,122,153,0.6);
     background: rgba(107,122,153,0.2);
   }
+  .legend-dot.done-dot {
+    background: repeating-linear-gradient(
+      45deg, rgba(34,197,94,0.5), rgba(34,197,94,0.5) 3px,
+      rgba(34,197,94,0.15) 3px, rgba(34,197,94,0.15) 6px
+    );
+    border: 1px solid rgba(34,197,94,0.5);
+  }
+
+  /* 今日の縦線 */
+  .today-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #22d3ee;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .today-label {
+    position: absolute;
+    top: -18px;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: #22d3ee;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
 
   .note {
     margin-top: 16px;
@@ -269,28 +307,28 @@
 </header>
 
 <div class="levels">
-  <div class="level-card la">
+  <div class="level-card la achieved">
     <div class="lbl">Level A — 1ヶ月</div>
     <h3>テンプレートをカスタマイズ</h3>
     <p>文字・色・画像を差し替えて<br>自分のページを作れる</p>
-    <span class="dl">4/6 〜 4/30</span>
+    <span class="dl">4/6 〜 4/20 達成</span>
   </div>
   <div class="level-card lb">
-    <div class="lbl">Level B — 2ヶ月</div>
+    <div class="lbl">Level B — 約6週間</div>
     <h3>ゼロからページを書く</h3>
     <p>テンプレートなしでシンプルな<br>ページを構築できる</p>
-    <span class="dl">5/1 〜 6/30</span>
+    <span class="dl">4/21 〜 5/31</span>
   </div>
   <div class="level-card lc">
-    <div class="lbl">Level C — 2ヶ月</div>
+    <div class="lbl">Level C — 1ヶ月</div>
     <h3>凝ったデザイン・動きを作る</h3>
     <p>複雑なレイアウトや<br>インタラクションを実装できる</p>
-    <span class="dl">7/1 〜 8/31</span>
+    <span class="dl">6/1 〜 6/30</span>
   </div>
 </div>
 
 <div class="gantt-wrap">
-  <div class="gantt-title">ガントチャート（2025年4月〜8月）</div>
+  <div class="gantt-title">ガントチャート（2025年4月〜6月）</div>
   <div class="gantt-scroll">
     <div class="gantt-inner" id="gantt-inner">
       <!-- 日付ヘッダー -->
@@ -316,6 +354,8 @@
     <div class="legend-item"><div class="legend-dot" style="background:rgba(234,179,8,0.7)"></div>JavaScript</div>
     <div class="legend-item"><div class="legend-dot" style="background:rgba(34,197,94,0.7)"></div>実践</div>
     <div class="legend-item"><div class="legend-dot dashed"></div>スマホ学習（出張）</div>
+    <div class="legend-item"><div class="legend-dot done-dot"></div>完了済み</div>
+    <div class="legend-item" style="color:var(--accent)">│ 今日</div>
   </div>
 </div>
 
@@ -325,8 +365,8 @@
 
 <script>
 const START  = new Date('2025-04-01');
-const END    = new Date('2025-08-31');
-const TOTAL  = Math.round((END - START) / 86400000) + 1; // 153日
+const END    = new Date('2025-06-30');
+const TOTAL  = Math.round((END - START) / 86400000) + 1; // 91日
 
 function dayOf(dateStr) {
   return Math.round((new Date(dateStr) - START) / 86400000);
@@ -346,8 +386,6 @@ const monthStarts = [
   { d: '2025-04-01', label: 'APR' },
   { d: '2025-05-01', label: 'MAY' },
   { d: '2025-06-01', label: 'JUN' },
-  { d: '2025-07-01', label: 'JUL' },
-  { d: '2025-08-01', label: 'AUG' },
 ];
 monthStarts.forEach(m => {
   const el = document.createElement('div');
@@ -396,8 +434,8 @@ function addGridLines(container) {
 /* ── Level帯 ── */
 const bands = [
   { start: '2025-04-01', end: '2025-04-30', color: 'rgba(249,115,22,0.07)', label: 'Level A', textColor: '#f97316' },
-  { start: '2025-05-01', end: '2025-06-30', color: 'rgba(59,130,246,0.07)',  label: 'Level B', textColor: '#3b82f6' },
-  { start: '2025-07-01', end: '2025-08-31', color: 'rgba(234,179,8,0.07)',   label: 'Level C', textColor: '#eab308' },
+  { start: '2025-04-21', end: '2025-05-31', color: 'rgba(59,130,246,0.07)',  label: 'Level B', textColor: '#3b82f6' },
+  { start: '2025-06-01', end: '2025-06-30', color: 'rgba(234,179,8,0.07)',   label: 'Level C', textColor: '#eab308' },
 ];
 const bandsEl = document.getElementById('bands');
 const bandRow = document.createElement('div');
@@ -423,22 +461,41 @@ bandRow.appendChild(bandTrack);
 bandsEl.appendChild(bandRow);
 
 /* ── タスク ── */
+const TODAY = '2025-04-20';
 const tasks = [
-  { label: 'HTML — 構造（PC）',           start: '2025-04-06', end: '2025-04-08', bg: 'rgba(249,115,22,0.75)', fg: 'white' },
-  { label: 'スマホ学習（出張）',           start: '2025-04-09', end: '2025-04-14', bg: '', fg: '', dashed: true },
-  { label: 'HTML — 応用（PC）',            start: '2025-04-15', end: '2025-04-19', bg: 'rgba(249,115,22,0.75)', fg: 'white' },
-  { label: 'CSS — 色・フォント・余白',     start: '2025-04-20', end: '2025-04-26', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
-  { label: '実践 — テンプレート改造',      start: '2025-04-27', end: '2025-04-30', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
-  { label: 'CSS — Flexbox・レイアウト',    start: '2025-05-01', end: '2025-06-15', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
-  { label: 'JS — 基礎・DOM操作',           start: '2025-06-01', end: '2025-06-25', bg: 'rgba(234,179,8,0.85)',   fg: '#1a1200' },
-  { label: '実践 — ページ制作',            start: '2025-06-16', end: '2025-06-30', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
-  { label: 'JS — 応用・API連携',           start: '2025-07-01', end: '2025-08-10', bg: 'rgba(234,179,8,0.85)',   fg: '#1a1200' },
-  { label: 'CSS — アニメーション・レスポンシブ', start: '2025-07-15', end: '2025-08-20', bg: 'rgba(59,130,246,0.75)', fg: 'white' },
-  { label: '実践 — 本番サイト制作',        start: '2025-08-01', end: '2025-08-31', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
+  // ── 完了済み（Level A）──
+  { label: 'HTML — 構造（PC）',           start: '2025-04-06', end: '2025-04-08', bg: 'rgba(249,115,22,0.75)', fg: 'white', done: true },
+  { label: 'スマホ学習（出張）',           start: '2025-04-09', end: '2025-04-14', bg: '', fg: '', dashed: true, done: true },
+  { label: 'CSS・JS概念 + HTML応用',       start: '2025-04-15', end: '2025-04-19', bg: 'rgba(249,115,22,0.75)', fg: 'white', done: true },
+  { label: '実践 — profile.html制作',      start: '2025-04-15', end: '2025-04-20', bg: 'rgba(34,197,94,0.75)',  fg: 'white', done: true },
+  // ── Level B（予定）──
+  { label: 'CSS Grid・レスポンシブ',        start: '2025-04-21', end: '2025-05-04', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
+  { label: '複数ページ構成・フォーム',      start: '2025-05-05', end: '2025-05-15', bg: 'rgba(59,130,246,0.75)',  fg: 'white' },
+  { label: '実践 — 複数ページサイト制作',   start: '2025-05-16', end: '2025-05-31', bg: 'rgba(34,197,94,0.75)',   fg: 'white' },
+  // ── Level C（予定）──
+  { label: 'JS — 応用・非同期処理',            start: '2025-06-01', end: '2025-06-15', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
+  { label: 'CSS — アニメーション・レスポンシブ', start: '2025-06-08', end: '2025-06-20', bg: 'rgba(59,130,246,0.75)', fg: 'white' },
+  { label: '実践 — 本番サイト制作',            start: '2025-06-16', end: '2025-06-30', bg: 'rgba(34,197,94,0.75)',  fg: 'white' },
 ];
 
 const tasksEl = document.getElementById('tasks');
 addGridLines(tasksEl);
+
+// 今日の縦線 — gantt-innerに追加してラベル列(210px)を考慮した位置に配置
+const ganttInner = document.getElementById('gantt-inner');
+ganttInner.style.position = 'relative';
+const todayFrac = dayOf(TODAY) / (TOTAL - 1);
+const todayLeft = `calc(${(210 * (1 - todayFrac)).toFixed(1)}px + ${(todayFrac * 100).toFixed(3)}%)`;
+
+const todayLine = document.createElement('div');
+todayLine.style.cssText = `position:absolute;left:${todayLeft};top:44px;bottom:0;width:2px;background:#22d3ee;opacity:0.7;pointer-events:none;z-index:10;transform:translateX(-50%);`;
+
+const todayLbl = document.createElement('div');
+todayLbl.style.cssText = `position:absolute;left:${todayLeft};top:26px;font-size:9px;font-weight:700;color:#22d3ee;font-family:'JetBrains Mono',monospace;white-space:nowrap;transform:translateX(-50%);background:var(--surface);padding:1px 4px;border-radius:3px;z-index:11;`;
+todayLbl.textContent = '今日 4/20';
+
+ganttInner.appendChild(todayLine);
+ganttInner.appendChild(todayLbl);
 
 tasks.forEach(t => {
   const row = document.createElement('div');
@@ -446,19 +503,30 @@ tasks.forEach(t => {
 
   const lbl = document.createElement('div');
   lbl.className = 'task-label';
-  lbl.textContent = t.label;
+  lbl.textContent = t.done ? '✓ ' + t.label : t.label;
+  if (t.done) lbl.style.color = 'var(--green)';
 
   const track = document.createElement('div');
   track.className = 'task-track';
 
   const bar = document.createElement('div');
-  bar.className = 'task-bar' + (t.dashed ? ' dashed' : '');
-  bar.style.left  = pct(dayOf(t.start));
-  bar.style.width = widthPct(t.start, t.end);
-  if (!t.dashed) {
+  if (t.dashed) {
+    bar.className = 'task-bar dashed';
+  } else if (t.done) {
+    bar.className = 'task-bar';
+    bar.style.background = 'repeating-linear-gradient(45deg,' +
+      t.bg + ',' + t.bg + ' 6px,' +
+      t.bg.replace(/[\d.]+\)$/, '0.3)') + ' 6px,' +
+      t.bg.replace(/[\d.]+\)$/, '0.3)') + ' 12px)';
+    bar.style.color = t.fg;
+    bar.style.border = '1px solid rgba(34,197,94,0.5)';
+  } else {
+    bar.className = 'task-bar';
     bar.style.background = t.bg;
     bar.style.color = t.fg;
   }
+  bar.style.left  = pct(dayOf(t.start));
+  bar.style.width = widthPct(t.start, t.end);
   bar.textContent = t.label;
 
   track.appendChild(bar);
@@ -470,8 +538,8 @@ tasks.forEach(t => {
 /* ── マイルストーン ── */
 const milestones = [
   { date: '2025-04-30', label: 'Level A', color: '#f97316' },
-  { date: '2025-06-30', label: 'Level B', color: '#3b82f6' },
-  { date: '2025-08-31', label: 'Level C', color: '#eab308' },
+  { date: '2025-05-31', label: 'Level B', color: '#3b82f6' },
+  { date: '2025-06-30', label: 'Level C', color: '#eab308' },
 ];
 
 const msTrack = document.getElementById('ms-track');
