@@ -247,6 +247,20 @@
     font-size: 14px;
     color: #1a202c;
   }
+  .preview-s2 .coin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+  margin-top: 12px;
+}
+.preview-s2 .coin-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.preview-s2 .coin-name { font-weight: 700; font-size: 13px; color: #1e3a5f; }
+.preview-s2 .coin-desc { font-size: 12px; color: #718096; margin-top: 4px; }
   .preview-s2 .page-header {
     background: linear-gradient(135deg, #1e3a5f 0%, #0d1f3c 100%);
     color: white;
@@ -268,7 +282,7 @@
   .preview-s2 .badge {
     padding: 4px 12px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 600;
     background: #ebf5fb;
     color: #1e3a5f;
@@ -342,6 +356,7 @@
   .preview-s2 .badge-blue, .preview-s3 .badge-blue   { background: #ebf5fb; color: #1e40af; border-color: #bee3f8; }
   .preview-s2 .badge-green, .preview-s3 .badge-green  { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
   .preview-s2 .badge-orange, .preview-s3 .badge-orange { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+  .preview-s2 .badge-yellow, .preview-s3 .badge-yellow { background: #fff7ed; color: #9a8a12; border-color: #fed7aa; }
 
   .preview-s3 .badge:hover { background: #1e3a5f; color: white; }
   .preview-s3 .tooltip {
@@ -369,6 +384,12 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+  .preview-s2 .coin-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -584,10 +605,15 @@ buttons.<span class="fn">forEach</span>(btn => {
           <section>
             <h2>主な種類</h2>
             <table>
+              <thead>
               <tr><th>名称</th><th>特徴</th><th>日本での分類</th></tr>
+              </thead>
+              <tbody>
               <tr><td>Bitcoin (BTC)</td><td>最初の暗号資産</td><td>暗号資産</td></tr>
               <tr><td>Ethereum (ETH)</td><td>スマートコントラクト基盤</td><td>暗号資産</td></tr>
+              <tr><td>XRP (XRP)</td><td>国際送金に特化</td><td>暗号資産</td></tr>
               <tr><td>USDC</td><td>米ドル連動ステーブルコイン</td><td>電子決済手段</td></tr>
+              </tbody>
             </table>
           </section>
           <section>
@@ -621,6 +647,24 @@ buttons.<span class="fn">forEach</span>(btn => {
               <tr><td>Ethereum (ETH)</td><td>スマートコントラクト基盤</td><td>暗号資産</td></tr>
               <tr><td>USDC</td><td>米ドル連動ステーブルコイン</td><td>電子決済手段</td></tr>
             </table>
+            <div class="coin-grid">
+              <div class="coin-card">
+                <div class="coin-name">Bitcoin (BTC)</div>
+                <div class="coin-desc">最初の暗号資産</div>
+              </div>
+              <div class="coin-card">
+                <div class="coin-name">Ethereum (ETH)</div>
+                <div class="coin-desc">スマートコントラクト基盤</div>
+              </div>
+              <div class="coin-card">
+                <div class="coin-name">XRP</div>
+                <div class="coin-desc">国際送金に特化</div>
+              </div>
+              <div class="coin-card">
+                <div class="coin-name">USDC</div>
+                <div class="coin-desc">米ドル連動ステーブルコイン</div>
+              </div>
+            </div>
           </section>
           <section>
             <h2>税務上の取扱い</h2>
@@ -656,6 +700,10 @@ buttons.<span class="fn">forEach</span>(btn => {
             <span class="badge badge-orange" id="b-p2p">P2P</span>
           </div>
           <div class="tooltip" id="tip-p2p">銀行などの仲介者なしに、個人間で直接取引（Peer to Peer）が可能です。</div>
+          <div class="badges" style="margin-top:8px">
+            <span class="badge badge-yellow" id="b-sc">スマートコントラクト</span>
+          </div>
+          <div class="tooltip" id="tip-sc">トリガーに対応してプログラムが実行されます。</div>
         </div>
 
         <div class="tab-panel" id="tab-types">
@@ -701,7 +749,7 @@ document.querySelectorAll('.preview-s3 .tab-btn').forEach(btn => {
 });
 
 // ===== Stage 3: Badge tooltips =====
-[['b-decen','tip-decen'],['b-bc','tip-bc'],['b-p2p','tip-p2p']].forEach(([bid, tid]) => {
+[['b-decen','tip-decen'],['b-bc','tip-bc'],['b-p2p','tip-p2p'],['b-sc','tip-sc']].forEach(([bid, tid]) => {
   document.getElementById(bid).addEventListener('click', () => {
     const tip = document.getElementById(tid);
     tip.classList.toggle('show');
