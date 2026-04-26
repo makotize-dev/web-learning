@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>問い合わせ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+  body {
+    background: #faf8f5;
+    color: #434242;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  header {
+    padding: 20px;
+    background: rgb(57, 156, 242);
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  nav a:hover {
+    color: greenyellow;
+  }
+  main {
+    padding: 40px;
+  }
+  button {
+    font-size: 20px;
+    padding: 10px 24px;
+    background: rgb(107, 137, 145);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;  /* ← 追加 */
+  }
+  button:hover {
+  background: rgb(57, 156, 242);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+  </style>
+</head>
+<body>
+    <header>
+        <h1>問い合わせフォーム</h1>
+        <nav>
+            <a href="profile.html">プロフィール</a>
+            <a href="schedule.html">スケジュール</a>
+        </nav>        
+    </header>
+    <main>
+        <section>
+            <h2>お問い合わせ</h2>
+            <form>
+                <p>
+                    <label>お名前</label><br>
+                    <input type="text" placeholder="例：山田太郎" required>
+                </p>
+                <p>
+                    <label>メールアドレス</label><br>
+                    <input type="email" placeholder="例：hello@example.com" required>
+                </p>
+                <p>
+                    <label>メッセージ</label><br>
+                    <textarea rows="4" placeholder="メッセージを入力"></textarea>
+                </p>
+                <button type="submit">送信する</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

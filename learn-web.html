@@ -99,6 +99,8 @@
   .main {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "explanation preview";
     flex: 1;
     overflow: hidden;
     height: calc(100vh - 110px);
@@ -110,6 +112,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    grid-area: explanation;  /* ← 追加 */
   }
 
   .principle-box {
@@ -200,6 +203,7 @@
     background: #f8f9fa;
     overflow-y: auto;
     position: relative;
+    grid-area: preview;  /* ← 追加 */    
   }
   .preview-label {
     position: sticky;

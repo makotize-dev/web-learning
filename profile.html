@@ -10,6 +10,10 @@
     padding: 20px;
     background: rgb(234, 122, 11);
   }
+  nav a {
+    color: white;
+    text-decoration: none;
+  }
   main {
     padding: 50px;
   }
@@ -25,13 +29,24 @@
     border-left: 5px solid #f6c13b;
     padding-left: 10px;
   }
+  button {
+    font-size: 20px;
+    padding: 10px 24px;
+    background: rgb(234, 122, 11);
+    color: white;
+    cursor: pointer;
+  }
   </style>
 </head>
 <body>
   <!-- ここに header と main と section を書く -->
    <header>
     <h1>安河内誠の自己紹介</h1>
-</header>
+    <nav>
+        <a href="schedule.html">スケジュール</a>
+        <a href="contact.html">問い合わせフォーム</a>
+    </nav>
+  </header>
    <main>
     <section>
         <h2>名前</h2>
@@ -64,6 +79,24 @@
         <p>
             ゆったりしたもの
         </p>
+    </section>
+    <section>
+      <h2>お問い合わせ</h2>
+      <form>
+        <p>
+          <label>お名前</label><br>
+          <input type="text" placeholder="例：山田太郎" required>
+        </p>
+        <p>
+          <label>メールアドレス</label><br>
+          <input type="email" placeholder="例：hello@example.com" required>
+        </p>
+        <p>
+          <label>メッセージ</label><br>
+          <textarea rows="4" placeholder="メッセージを入力"></textarea>
+        </p>
+        <button type="submit">送信する</button>
+      </form>
     </section>
    </main>
 </body>
