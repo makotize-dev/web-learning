@@ -21,6 +21,8 @@
     background: #faf8f5;
     color: #434242;
     font-family: 'Noto Sans JP', sans-serif;
+    background-image: radial-gradient(circle, #ccc 2px, transparent 5px);
+    background-size: 40px 40px;
   }
   section {
     margin-bottom: 50px;
@@ -87,6 +89,10 @@
           <label>お名前</label><br>
           <input type="text" placeholder="例：山田太郎" required>
         </p>
+         <p>
+          <label>フリガナ</label><br>
+          <input type="text" placeholder="例：ヤマダタロウ">
+        </p>
         <p>
           <label>メールアドレス</label><br>
           <input type="email" placeholder="例：hello@example.com" required>
@@ -96,6 +102,16 @@
           <textarea rows="4" placeholder="メッセージを入力"></textarea>
         </p>
         <button type="submit">送信する</button>
+      </form>
+    </section>
+    <section>
+      <h2>満足度</h2>
+      <form>
+        <div><input type="radio" name="rating" value="1"> ★</div>
+        <div></div><input type="radio" name="rating" value="2"> ★★</div>
+        <div></div><input type="radio" name="rating" value="3"> ★★★</div>
+        <div></div><input type="radio" name="rating" value="4"> ★★★★</div>
+        <div></div><input type="radio" name="rating" value="5"> ★★★★★</div>
       </form>
     </section>
    </main>
