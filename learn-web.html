@@ -394,6 +394,114 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Level C: Stage 4 & 5 ── */
+.stage-btn[data-stage="4"] .tag { background: rgba(245,158,11,.15); color: #f59e0b; }
+.stage-btn[data-stage="5"] .tag { background: rgba(236,72,153,.15); color: #ec4899; }
+.stage-btn[data-stage="4"].active { border-bottom-color: #f59e0b; }
+.stage-btn[data-stage="5"].active { border-bottom-color: #ec4899; }
+.s4 .label { color: #f59e0b; }
+.s5 .label { color: #ec4899; }
+.s4 .rule-num { background: rgba(245,158,11,.2); color: #f59e0b; }
+.s5 .rule-num { background: rgba(236,72,153,.2); color: #ec4899; }
+
+/* Stage 4 Preview */
+.preview-s4 {
+  background: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  color: #1a202c;
+}
+.preview-s4 .page-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #0d1f3c 100%);
+  color: white; padding: 32px 24px;
+}
+.preview-s4 .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.preview-s4 .page-header p  { font-size: 13px; opacity: .75; }
+.preview-s4 .demo-body { padding: 20px 24px; }
+.status-idle    { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: #6b7280; }
+.status-loading { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: #f59e0b; }
+.status-done    { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: #16a34a; }
+.status-error   { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: #dc2626; }
+.s4-btn {
+  padding: 8px 18px; background: #1e3a5f; color: white; border: none;
+  border-radius: 6px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer; font-weight: 600; margin: 12px 0 16px;
+  transition: background .2s; display: block;
+}
+.s4-btn:hover    { background: #2d5080; }
+.s4-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+.empty-hint   { font-size: 13px; color: #9ca3af; padding: 16px 0; }
+.loading-hint { font-size: 13px; color: #f59e0b; padding: 12px 0; font-family: 'JetBrains Mono', monospace; }
+.price-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 6px; margin-bottom: 6px;
+  border: 1px solid #e2e8f0; font-size: 13px;
+}
+.price-row .sym  { font-weight: 700; font-family: 'JetBrains Mono', monospace; width: 40px; color: #1e3a5f; }
+.price-row .pname { color: #6b7280; flex: 1; }
+.price-row .pval  { font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.price-row.up   .pch { color: #16a34a; font-weight: 600; }
+.price-row.down .pch { color: #dc2626; font-weight: 600; }
+
+/* Stage 5 Preview */
+.preview-s5 {
+  background: #fff;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  color: #1a202c;
+}
+.preview-s5 .page-header {
+  background: linear-gradient(135deg, #4a1d96 0%, #1e1b4b 100%);
+  color: white; padding: 32px 24px;
+}
+.preview-s5 .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.preview-s5 .page-header p  { font-size: 13px; opacity: .75; }
+.preview-s5 .demo-body { padding: 20px 24px; }
+.s5-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+.s5-btn {
+  padding: 8px 16px; border: none; border-radius: 6px;
+  font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer; font-weight: 600; transition: opacity .2s;
+}
+.s5-btn:hover  { opacity: .85; }
+.s5-btn.green  { background: #16a34a; color: white; }
+.s5-btn.red    { background: #dc2626; color: white; }
+.price-card-anim {
+  border: 1px solid #e2e8f0; border-radius: 10px;
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 4px;
+}
+.price-card-anim .coin   { font-size: 11px; font-weight: 700; color: #6b7280; letter-spacing: .1em; }
+.price-card-anim .price  { font-size: 24px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #1e3a5f; }
+.price-card-anim .change { font-size: 13px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: #6b7280; }
+.transform-demo { margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+.transform-demo p { font-size: 12px; color: #718096; margin-bottom: 10px; }
+.t-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.t-badge {
+  padding: 6px 14px; background: #f1f5f9; border-radius: 6px;
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+  color: #374151; cursor: default; display: inline-block;
+  transition: transform .15s ease, background .15s;
+}
+.t-badge:hover             { background: #e2e8f0; }
+.t-badge.t-translate:hover { transform: translateY(-6px); }
+.t-badge.t-scale:hover     { transform: scale(1.2); }
+.t-badge.t-rotate:hover    { transform: rotate(10deg); }
+
+@keyframes price-up {
+  0%   { background: #ffffff; }
+  40%  { background: #dcfce7; }
+  65%  { background: #16a34a; color: white; transform: scale(1.03); }
+  100% { background: #ffffff; transform: scale(1); }
+}
+@keyframes price-down {
+  0%   { background: #ffffff; }
+  40%  { background: #fee2e2; }
+  65%  { background: #dc2626; color: white; }
+  100% { background: #ffffff; }
+}
+.price-card-anim.up   { animation: price-up   0.9s ease; }
+.price-card-anim.down { animation: price-down 0.9s ease; }
 </style>
 </head>
 <body>
@@ -412,6 +520,12 @@
   </button>
   <button class="stage-btn" data-stage="3" onclick="setStage(3)">
     <span class="tag">JS</span> Stage 3 — 動作
+  </button>
+  <button class="stage-btn" data-stage="4" onclick="setStage(4)">
+    <span class="tag">JS+</span> Stage 4 — 非同期
+  </button>
+  <button class="stage-btn" data-stage="5" onclick="setStage(5)">
+    <span class="tag">CSS✦</span> Stage 5 — アニメ
   </button>
 </div>
 
@@ -582,6 +696,109 @@ buttons.<span class="fn">forEach</span>(btn => {
 });</pre>
       </div>
     </div>
+
+    <!-- STAGE 4 -->
+    <div class="stage-content s4" id="left-4">
+      <div class="principle-box">
+        <div class="label">原理</div>
+        <h2>Promiseは「未来の値の約束」<br>async/awaitはそれを同期的に書く</h2>
+        <p>JavaScriptはシングルスレッド。ネットワーク通信の完了を待ちながら止まることはできません。代わりに <strong>Promise</strong>（後で値が届く約束）を返し、届いたときに処理を続けます。<code>async/await</code> はその書き方を直感的にした構文糖です。</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-text"><strong>fetchはPromiseを返す。</strong> <code>fetch(url)</code> は即座に <code>Promise</code> を返す。データはまだない。<code>await</code> で解決を待つまで次の行は実行されない。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-text"><strong>async関数の中でのみawaitが使える。</strong> <code>async</code> を付けた関数の戻り値は自動でPromiseにラップされる。呼び出し側もasyncにする必要がある。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-text"><strong>try/catchでrejectを捕捉。</strong> ネットワークエラーなどPromiseが失敗すると <code>reject</code> される。<code>try/catch</code> がないとエラーが握りつぶされ、画面が無反応になる。</div>
+        </div>
+      </div>
+      <div class="code-area">
+        <pre><span class="cm">// ① 非同期関数の定義（asyncキーワード）</span>
+<span class="kw">async</span> <span class="kw">function</span> <span class="fn">fetchPrices</span>() {
+
+  <span class="cm">// fetch()はPromiseを返す → awaitで解決を待つ</span>
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="st">'https://api.example.com/v1/prices'</span>
+  );
+
+  <span class="cm">// JSON変換もPromise（awaitが必要）</span>
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+  <span class="kw">return</span> data; <span class="cm">// Promiseでラップされて返る</span>
+}
+
+<span class="cm">// ② 呼び出し側：エラーハンドリング</span>
+<span class="kw">async</span> <span class="kw">function</span> <span class="fn">loadData</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> prices = <span class="kw">await</span> <span class="fn">fetchPrices</span>();
+    <span class="fn">renderUI</span>(prices); <span class="cm">// データが来てからDOM更新</span>
+
+  } <span class="kw">catch</span> (err) {
+    <span class="cm">// reject → ここへ（ネットワークエラー等）</span>
+    <span class="fn">showError</span>(err.message);
+  }
+}
+
+<span class="cm">// ③ イベントから呼び出す</span>
+btn.<span class="fn">addEventListener</span>(<span class="st">'click'</span>, loadData);</pre>
+      </div>
+    </div>
+
+    <!-- STAGE 5 -->
+    <div class="stage-content s5" id="left-5">
+      <div class="principle-box">
+        <div class="label">原理</div>
+        <h2>@keyframesは「状態遷移の<br>コマ撮り」を定義する</h2>
+        <p>CSSアニメーションは <strong>①コマを定義（@keyframes）→ ②要素に適用（animation）</strong> の2ステップ。<code>transition</code> が「状態変化への反応」であるのに対し、<code>animation</code> は「クラスを付けるだけで自律的に動く」のが違いです。</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-text"><strong>@keyframesは定義だけ。</strong> <code>@keyframes 名前 { 0% ... 100% }</code> はアニメーションの「コマ」の定義に過ぎない。要素に <code>animation</code> プロパティで適用して初めて動く。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-text"><strong>transitionとanimationは別物。</strong> <code>transition</code> はCSSプロパティの変化に補間を加える。<code>animation</code> は@keyframesに沿って繰り返し・途中停止など複雑な動きが作れる。</div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-text"><strong>transformはレイアウトを壊さない。</strong> <code>translate / scale / rotate</code> は占有スペースを変えず視覚的に動かす。<code>top/left</code> で動かすとリフローが走るが、transformは軽量でGPU処理になる。</div>
+        </div>
+      </div>
+      <div class="code-area">
+        <pre><span class="cm">/* ① @keyframes でコマを定義 */</span>
+<span class="kw">@keyframes</span> <span class="fn">price-up</span> {
+  <span class="nu">0%</span>   { <span class="pr">background</span>: <span class="vl">#ffffff</span>; }
+  <span class="nu">65%</span>  { <span class="pr">background</span>: <span class="vl">#16a34a</span>;
+          <span class="pr">color</span>: <span class="vl">white</span>;
+          <span class="pr">transform</span>: <span class="fn">scale</span>(<span class="nu">1.03</span>); }
+  <span class="nu">100%</span> { <span class="pr">background</span>: <span class="vl">#ffffff</span>;
+          <span class="pr">transform</span>: <span class="fn">scale</span>(<span class="nu">1</span>); }
+}
+
+<span class="cm">/* ② animation プロパティで適用 */</span>
+<span class="se">.card.up</span> {
+  <span class="pr">animation</span>: <span class="fn">price-up</span> <span class="nu">0.9s</span> <span class="vl">ease</span>;
+  <span class="cm">/*          名前     時間  イージング */</span>
+}
+
+<span class="cm">/* ③ transform: レイアウトを壊さず変形 */</span>
+<span class="se">.badge</span> {
+  <span class="pr">transition</span>: <span class="pr">transform</span> <span class="nu">0.15s</span> <span class="vl">ease</span>;
+}
+<span class="se">.badge:hover</span> {
+  <span class="cm">/* 複数のtransformは半角スペースで連結 */</span>
+  <span class="pr">transform</span>: <span class="fn">translateY</span>(<span class="nu">-4px</span>) <span class="fn">scale</span>(<span class="nu">1.08</span>);
+}</pre>
+      </div>
+    </div>
+
   </div>
 
   <!-- ===== RIGHT: Preview ===== -->
@@ -727,6 +944,47 @@ buttons.<span class="fn">forEach</span>(btn => {
         </div>
       </div>
 
+      <!-- STAGE 4 Preview -->
+      <div class="preview-s4 stage-content" id="prev-4">
+        <div class="page-header">
+          <h1>非同期処理デモ</h1>
+          <p>async/await + fetch のステート変化を観察する</p>
+        </div>
+        <div class="demo-body">
+          <div style="font-size:12px;color:#6b7280;margin-bottom:4px;">実行状態：</div>
+          <span id="s4-status" class="status-idle">● 待機中 — Promiseなし</span>
+          <button id="s4-fetch-btn" class="s4-btn">🔄 fetchPrices() を実行</button>
+          <div id="s4-output"><div class="empty-hint">↑ ボタンをクリックしてください</div></div>
+        </div>
+      </div>
+
+      <!-- STAGE 5 Preview -->
+      <div class="preview-s5 stage-content" id="prev-5">
+        <div class="page-header">
+          <h1>アニメーション デモ</h1>
+          <p>@keyframes / transform / transition</p>
+        </div>
+        <div class="demo-body">
+          <div class="s5-btns">
+            <button id="s5-up-btn" class="s5-btn green">↑ 価格UP (price-up)</button>
+            <button id="s5-down-btn" class="s5-btn red">↓ 価格DOWN (price-down)</button>
+          </div>
+          <div class="price-card-anim" id="s5-card">
+            <div class="coin">BTC / BITCOIN</div>
+            <div class="price" id="s5-price">¥10,500,000</div>
+            <div class="change" id="s5-change">--</div>
+          </div>
+          <div class="transform-demo">
+            <p>hover で transform を体感：</p>
+            <div class="t-badges">
+              <span class="t-badge t-translate">translateY(-6px)</span>
+              <span class="t-badge t-scale">scale(1.2)</span>
+              <span class="t-badge t-rotate">rotate(10deg)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -758,6 +1016,79 @@ document.querySelectorAll('.preview-s3 .tab-btn').forEach(btn => {
     const tip = document.getElementById(tid);
     tip.classList.toggle('show');
   });
+});
+
+// ===== Stage 4: Async/Await demo =====
+const MOCK_PRICES = [
+  { symbol: 'BTC', name: 'Bitcoin',  price: '10,500,000', change: '+2.3%', up: true  },
+  { symbol: 'ETH', name: 'Ethereum', price: '580,000',    change: '-0.8%', up: false },
+  { symbol: 'XRP', name: 'XRP',      price: '145',        change: '+5.1%', up: true  },
+  { symbol: 'SOL', name: 'Solana',   price: '32,000',     change: '+1.2%', up: true  },
+];
+
+function simulateFetch() {
+  return new Promise(resolve => setTimeout(() => resolve(MOCK_PRICES), 1500));
+}
+
+document.getElementById('s4-fetch-btn').addEventListener('click', async () => {
+  const btn    = document.getElementById('s4-fetch-btn');
+  const status = document.getElementById('s4-status');
+  const output = document.getElementById('s4-output');
+
+  btn.disabled = true;
+  status.className   = 'status-loading';
+  status.textContent = '● fetch() 実行中… Promise pending';
+  output.innerHTML   = '<div class="loading-hint">⏳ await でPromiseの解決を待機中…</div>';
+
+  try {
+    const data = await simulateFetch();
+    status.className   = 'status-done';
+    status.textContent = '● Promise resolved ✓ データ取得完了';
+    output.innerHTML   = data.map(d => `
+      <div class="price-row ${d.up ? 'up' : 'down'}">
+        <span class="sym">${d.symbol}</span>
+        <span class="pname">${d.name}</span>
+        <span class="pval">¥${d.price}</span>
+        <span class="pch">${d.change}</span>
+      </div>`).join('');
+  } catch (err) {
+    status.className   = 'status-error';
+    status.textContent = '● Promise rejected — ' + err.message;
+    output.innerHTML   = '<div style="color:#dc2626;font-size:13px;padding:10px 0">⚠ catch ブロックに入りました</div>';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ===== Stage 5: Animation demo =====
+let s5Price = 10500000;
+
+document.getElementById('s5-up-btn').addEventListener('click', () => {
+  const card     = document.getElementById('s5-card');
+  const priceEl  = document.getElementById('s5-price');
+  const changeEl = document.getElementById('s5-change');
+  const pct = (Math.random() * 4 + 0.5).toFixed(1);
+  s5Price = Math.floor(s5Price * (1 + parseFloat(pct) / 100));
+  priceEl.textContent  = '¥' + s5Price.toLocaleString();
+  changeEl.textContent = '+' + pct + '%';
+  changeEl.style.color = '#16a34a';
+  card.classList.remove('up', 'down');
+  void card.offsetWidth; // reflow でアニメーションをリセット
+  card.classList.add('up');
+});
+
+document.getElementById('s5-down-btn').addEventListener('click', () => {
+  const card     = document.getElementById('s5-card');
+  const priceEl  = document.getElementById('s5-price');
+  const changeEl = document.getElementById('s5-change');
+  const pct = (Math.random() * 4 + 0.5).toFixed(1);
+  s5Price = Math.floor(s5Price * (1 - parseFloat(pct) / 100));
+  priceEl.textContent  = '¥' + s5Price.toLocaleString();
+  changeEl.textContent = '-' + pct + '%';
+  changeEl.style.color = '#dc2626';
+  card.classList.remove('up', 'down');
+  void card.offsetWidth;
+  card.classList.add('down');
 });
 </script>
 </body>
