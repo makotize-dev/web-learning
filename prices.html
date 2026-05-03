@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暗号資産_価格情報</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    table {
+    border-collapse: collapse;
+    }
+    th, td {
+    border: 1px solid #ccc;
+    font-size: 20px;
+    text-align: right;
+    }
+    th {
+        background-color: orange;
+        text-align: center;
+    }
+    tbody tr:nth-child(odd)  { background-color: white;}
+    tbody tr:nth-child(even) { background-color: #f9f9f9;}
+
+  .up   { color: #16a34a; font-weight: 600; }
+  .down { color: #dc2626; font-weight: 600; }
+
+  button {
+    background-color: orange;
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+    opacity: 0;
+    transform: translateY(10px);
+    }
+    to {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    }
+
+    td {
+        animation: fadeSlideIn 0.4s ease;
+    }
+
+  </style>
+</head>
+<body>
+    <header>
+        <h1>暗号資産の価格情報</h1>
+        <p>
+
+        </p>
+    </header>
+    <main>
+        <section>
+            <h2>銘柄別の価格情報</h2>
+            <table>
+              <thead>
+              <tr><th>銘柄</th><th>価格</th><th>変化率</th></tr>
+              </thead>
+              <tbody id="price-body">
+              </tbody>
+            </table>
+            <span id="status">待機中</span>
+            <button id="fetch-btn">データ取得</button>
+            <span id="last-updated"></span>
+        </section>
+    </main>
+    <script>
+    const btn    = document.getElementById('fetch-btn');
+    const status = document.getElementById('status');
+    const body   = document.getElementById('price-body');
+    const lastUpdated = document.getElementById('last-updated');
+    setInterval(loadPrices, 30000);
+
+    btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        status.textContent = '取得中…';
+        try {
+            await loadPrices();
+            status.textContent = '更新完了';
+        } catch (err) {
+            status.textContent = 'エラー：' + err.message;
+        } finally {
+            btn.disabled = false;
+        }
+    });
+    async function loadPrices() {
+        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,solana&vs_currencies=jpy&include_24hr_change=true';
+        const res  = await fetch(url);
+        const data = await res.json();
+        const coins = [
+            { id: 'bitcoin',  name: 'Bitcoin (BTC)' },
+            { id: 'ethereum', name: 'Ethereum (ETH)' },
+            { id: 'ripple',   name: 'XRP (XRP)' },
+            { id: 'solana',   name: 'Solana (SOL)' },
+        ];
+
+        body.innerHTML = coins.map(coin => {
+            const price  = data[coin.id].jpy.toLocaleString();
+            const change = data[coin.id].jpy_24h_change.toFixed(2);
+            const changeClass = change >= 0 ? 'up' : 'down';
+            const changeSign  = change >= 0 ? '+' : '';
+            return `<tr>
+                <td>${coin.name}</td>
+                <td>¥${price}</td>
+                <td class="${changeClass}">${changeSign}${change}%</td>
+                </tr>`;
+
+        }).join('');
+
+        lastUpdated.textContent = '最終更新：' + new Date().toLocaleTimeString('ja-JP');
+
+            }
+    </script>
+</body>
+</html>
