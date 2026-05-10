@@ -43,6 +43,44 @@
         animation: fadeSlideIn 0.4s ease;
     }
 
+  /* チャート */
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+  @media (max-width: 600px) {
+    .charts { grid-template-columns: 1fr; }
+  }
+  .chart-card h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .chart-card svg {
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 0 auto;
+  }
+  .legend {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-color {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
   </style>
 </head>
 <body>
@@ -66,6 +104,17 @@
             <button id="fetch-btn">データ取得</button>
             <span id="last-updated"></span>
         </section>
+        <section class="charts">
+            <div class="chart-card">
+                <h3>時価総額シェア</h3>
+                <svg id="pie-chart" viewBox="0 0 200 200"></svg>
+                <div id="pie-legend" class="legend"></div>
+            </div>
+            <div class="chart-card">
+                <h3>ビットコイン価格推移（直近3ヶ月）</h3>
+                <svg id="line-chart" viewBox="0 0 400 200"></svg>
+            </div>
+        </section>
     </main>
     <script>
     const btn    = document.getElementById('fetch-btn');
@@ -73,6 +122,7 @@
     const body   = document.getElementById('price-body');
     const lastUpdated = document.getElementById('last-updated');
     setInterval(loadPrices, 30000);
+    drawLineChart();
 
     btn.addEventListener('click', async () => {
         btn.disabled = true;
@@ -86,18 +136,19 @@
             btn.disabled = false;
         }
     });
+    const COINS = [
+        { id: 'bitcoin',  name: 'Bitcoin (BTC)',  color: '#f7931a' },
+        { id: 'ethereum', name: 'Ethereum (ETH)', color: '#627eea' },
+        { id: 'ripple',   name: 'XRP (XRP)',      color: '#346aa9' },
+        { id: 'solana',   name: 'Solana (SOL)',   color: '#9945ff' },
+    ];
+
     async function loadPrices() {
-        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,solana&vs_currencies=jpy&include_24hr_change=true';
+        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,solana&vs_currencies=jpy&include_24hr_change=true&include_market_cap=true';
         const res  = await fetch(url);
         const data = await res.json();
-        const coins = [
-            { id: 'bitcoin',  name: 'Bitcoin (BTC)' },
-            { id: 'ethereum', name: 'Ethereum (ETH)' },
-            { id: 'ripple',   name: 'XRP (XRP)' },
-            { id: 'solana',   name: 'Solana (SOL)' },
-        ];
 
-        body.innerHTML = coins.map(coin => {
+        body.innerHTML = COINS.map(coin => {
             const price  = data[coin.id].jpy.toLocaleString();
             const change = data[coin.id].jpy_24h_change.toFixed(2);
             const changeClass = change >= 0 ? 'up' : 'down';
@@ -107,12 +158,101 @@
                 <td>¥${price}</td>
                 <td class="${changeClass}">${changeSign}${change}%</td>
                 </tr>`;
-
         }).join('');
 
-        lastUpdated.textContent = '最終更新：' + new Date().toLocaleTimeString('ja-JP');
+        drawPieChart(data);
 
-            }
+        lastUpdated.textContent = '最終更新：' + new Date().toLocaleTimeString('ja-JP');
+    }
+
+    function drawPieChart(data) {
+        const cx = 100, cy = 100, r = 80;
+        const total = COINS.reduce((sum, c) => sum + data[c.id].jpy_market_cap, 0);
+
+        let startAngle = 0;
+        const paths = COINS.map(coin => {
+            const share = data[coin.id].jpy_market_cap / total;
+            const endAngle = startAngle + share * 360;
+
+            const x1 = cx + r * Math.cos((startAngle - 90) * Math.PI / 180);
+            const y1 = cy + r * Math.sin((startAngle - 90) * Math.PI / 180);
+            const x2 = cx + r * Math.cos((endAngle - 90) * Math.PI / 180);
+            const y2 = cy + r * Math.sin((endAngle - 90) * Math.PI / 180);
+            const largeArc = (endAngle - startAngle) > 180 ? 1 : 0;
+
+            const d = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+            startAngle = endAngle;
+            return { d, color: coin.color, name: coin.name, share };
+        });
+
+        document.getElementById('pie-chart').innerHTML =
+            paths.map(p => `<path d="${p.d}" fill="${p.color}"/>`).join('');
+
+        document.getElementById('pie-legend').innerHTML =
+            paths.map(p => `
+                <div class="legend-item">
+                    <span class="legend-color" style="background:${p.color}"></span>
+                    ${p.name} ${(p.share * 100).toFixed(1)}%
+                </div>
+            `).join('');
+    }
+
+    async function drawLineChart() {
+        const url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=jpy&days=90';
+        const res = await fetch(url);
+        const data = await res.json();
+        const prices = data.prices;
+
+        const w = 400, h = 200;
+        const padL = 65, padR = 10, padT = 15, padB = 30;
+        const chartW = w - padL - padR;
+        const chartH = h - padT - padB;
+
+        const priceVals = prices.map(p => p[1]);
+        const minP = Math.min(...priceVals);
+        const maxP = Math.max(...priceVals);
+        const range = maxP - minP || 1;
+
+        const points = prices.map((p, i) => {
+            const x = padL + (i / (prices.length - 1)) * chartW;
+            const y = padT + (1 - (p[1] - minP) / range) * chartH;
+            return [x, y];
+        });
+
+        const linePath = points.map((pt, i) =>
+            `${i === 0 ? 'M' : 'L'} ${pt[0].toFixed(1)} ${pt[1].toFixed(1)}`
+        ).join(' ');
+
+        const formatPrice = v => '¥' + Math.round(v / 10000).toLocaleString() + '万';
+        const yLabels = [maxP, (minP + maxP) / 2, minP].map((v, i) => {
+            const y = padT + (i / 2) * chartH;
+            return `<text x="${padL - 5}" y="${y + 4}" text-anchor="end" font-size="10" fill="#666">${formatPrice(v)}</text>`;
+        }).join('');
+
+        const firstTs = prices[0][0];
+        const lastTs  = prices[prices.length - 1][0];
+        const firstDate = new Date(firstTs);
+        const lastDate  = new Date(lastTs);
+
+        const months = [];
+        let cur = new Date(firstDate.getFullYear(), firstDate.getMonth() + 1, 1);
+        while (cur <= lastDate) {
+            months.push(new Date(cur));
+            cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+        }
+
+        const xLabels = months.map(m => {
+            const ratio = (m.getTime() - firstTs) / (lastTs - firstTs);
+            const x = padL + ratio * chartW;
+            return `<text x="${x}" y="${h - padB + 15}" text-anchor="middle" font-size="10" fill="#666">${m.getMonth() + 1}月</text>`;
+        }).join('');
+
+        document.getElementById('line-chart').innerHTML = `
+            ${yLabels}
+            ${xLabels}
+            <path d="${linePath}" stroke="#f7931a" stroke-width="2" fill="none"/>
+        `;
+    }
     </script>
 </body>
 </html>
