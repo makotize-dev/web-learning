@@ -373,6 +373,14 @@
   <strong>4/9〜4/14（出張）:</strong> PCなし。スマホ＋claude.aiで概念学習・コード読み込みを継続。
 </div>
 
+<div class="note">
+  <strong>5/31ゴール「JS×AI」の具体的な達成基準:</strong><br>
+  ① JSコードを読んで実行を1行ずつ追える（各行のあと変数に何が入っているか・次にどの行が動くかを説明できる）— 土台<br>
+  ② AIが書いたJSを読んで意図通りか自分で確認できる（予想→検証し、違っていたら指摘できる）<br>
+  ③ 作りたいJSの動きを、AIが実装できる粒度で具体的に説明・指示できる<br>
+  核心は①。実行を追えれば②③も成立する。
+</div>
+
 <script>
 const START  = new Date('2026-04-01');
 const END    = new Date('2026-05-31');
@@ -470,7 +478,7 @@ bandRow.appendChild(bandTrack);
 bandsEl.appendChild(bandRow);
 
 /* ── タスク ── */
-const TODAY = '2026-05-10';
+const TODAY = '2026-05-16';
 const tasks = [
   // ── 完了済み（Level A）──
   { label: 'HTML — 構造（PC）',           start: '2026-04-06', end: '2026-04-08', bg: 'rgba(249,115,22,0.75)', fg: 'white', done: true },
@@ -488,8 +496,11 @@ const tasks = [
   { label: '実践 — prices.html制作',       start: '2026-04-30', end: '2026-05-03', bg: 'rgba(34,197,94,0.75)',  fg: 'white',   done: true },
   // ── Level C（マイルストーン式）──
   { label: 'prices.html グラフ実装（M3/M4練習）', start: '2026-05-04', end: '2026-05-08', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
-  // ── 進行中・予定 ──
-  { label: 'テンプレート加工練習（M1/M2）',    start: '2026-05-09', end: '2026-05-20', bg: 'rgba(59,130,246,0.75)', fg: 'white' },
+  { label: 'テンプレート加工練習（M1/M2）',    start: '2026-05-09', end: '2026-05-12', bg: 'rgba(59,130,246,0.75)', fg: 'white',   done: true },
+  { label: '振り返り・方向決め',               start: '2026-05-13', end: '2026-05-13', bg: 'rgba(150,150,150,0.6)', fg: 'white',   done: true },
+  { label: 'Chart.js（ライブラリ入門）',       start: '2026-05-14', end: '2026-05-16', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
+  // ── 進行中 ──
+  { label: 'JS土台づくり（実行を追う練習）',   start: '2026-05-17', end: '2026-05-31', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
 ];
 
 const tasksEl = document.getElementById('tasks');
@@ -506,7 +517,7 @@ todayLine.style.cssText = `position:absolute;left:${todayLeft};top:44px;bottom:0
 
 const todayLbl = document.createElement('div');
 todayLbl.style.cssText = `position:absolute;left:${todayLeft};top:26px;font-size:9px;font-weight:700;color:#22d3ee;font-family:'JetBrains Mono',monospace;white-space:nowrap;transform:translateX(-50%);background:var(--surface);padding:1px 4px;border-radius:3px;z-index:11;`;
-todayLbl.textContent = '今日 5/10';
+todayLbl.textContent = '今日 5/16';
 
 ganttInner.appendChild(todayLine);
 ganttInner.appendChild(todayLbl);
@@ -555,7 +566,8 @@ const milestones = [
   { date: '2026-04-28', label: 'Level B', color: '#3b82f6' },
   { date: '2026-05-06', label: 'M3 ✓',    color: '#22c55e' },
   { date: '2026-05-08', label: 'M4 ✓',    color: '#22c55e' },
-  { date: '2026-05-20', label: 'M1/M2',   color: '#22d3ee' },
+  { date: '2026-05-12', label: 'M1/M2 ✓', color: '#22c55e' },
+  { date: '2026-05-31', label: 'JS×AI',   color: '#22d3ee' },
 ];
 
 const msTrack = document.getElementById('ms-track');
