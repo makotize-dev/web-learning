@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習スケジュール（2026年6月〜）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --surface2: #1e2330;
+    --border: #2a3045;
+    --text: #e2e8f0;
+    --muted: #6b7a99;
+    --accent: #22d3ee;
+    --phase1: #eab308;
+    --phase2: #22c55e;
+    --transit: #6b7a99;
+    --rough: #a78bfa;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  header p { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+  /* Phase Cards */
+  .phases {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .phase-card .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .phase-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .phase-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .phase-card .dl {
+    margin-top: 8px; font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px; border-radius: 4px; display: inline-block;
+  }
+  .p1 .lbl, .p1 .dl { color: var(--phase1); }
+  .p1 .dl { background: rgba(234,179,8,.12); }
+  .pt .lbl, .pt .dl { color: var(--transit); }
+  .pt .dl { background: rgba(107,122,153,.12); }
+  .p2 .lbl, .p2 .dl { color: var(--phase2); }
+  .p2 .dl { background: rgba(34,197,94,.12); }
+
+  /* Gantt container */
+  .gantt-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .gantt-title {
+    padding: 14px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .gantt-scroll {
+    overflow-x: auto;
+    padding: 20px 20px 20px 0;
+  }
+  .gantt-inner {
+    min-width: 2400px;
+    position: relative;
+  }
+
+  /* Phase bands */
+  .band-row {
+    display: flex;
+    align-items: stretch;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+  .band-label {
+    width: 210px;
+    flex-shrink: 0;
+  }
+  .band-track {
+    flex: 1;
+    position: relative;
+  }
+  .band {
+    position: absolute;
+    top: 0; bottom: 0;
+    border-radius: 4px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  /* Date header */
+  .date-header {
+    display: flex;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .date-label-spacer { width: 210px; flex-shrink: 0; }
+  .date-ticks {
+    flex: 1;
+    position: relative;
+    height: 20px;
+  }
+  .tick {
+    position: absolute;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .tick.month {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+  }
+
+  /* Grid lines */
+  .grid-lines {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+  .grid-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+    opacity: 0.4;
+  }
+  .grid-line.month-line {
+    background: var(--border);
+    opacity: 0.8;
+  }
+
+  /* Task rows */
+  .task-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    height: 28px;
+  }
+  .task-label {
+    width: 210px;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    padding-right: 14px;
+  }
+  .task-track {
+    flex: 1;
+    height: 28px;
+    position: relative;
+  }
+  .task-bar {
+    position: absolute;
+    top: 3px; bottom: 3px;
+    border-radius: 5px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 600;
+    white-space: nowrap; overflow: hidden;
+    min-width: 4px;
+  }
+  .task-bar.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.15) !important;
+    color: var(--muted) !important;
+  }
+  .task-bar.rough {
+    border: 1px dashed rgba(167,139,250,0.5);
+    background: rgba(167,139,250,0.15) !important;
+    color: rgba(216,200,255,0.85) !important;
+    font-style: italic;
+  }
+
+  /* Milestone row */
+  .ms-row {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    margin-top: 4px;
+  }
+  .ms-track {
+    flex: 1;
+    position: relative;
+    height: 32px;
+  }
+  .ms-flag {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .ms-diamond {
+    width: 10px; height: 10px;
+    border: 2px solid;
+    transform: rotate(45deg);
+    background: var(--bg);
+  }
+  .ms-text {
+    font-size: 10px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 18px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center;
+    gap: 6px; font-size: 11px; color: var(--muted);
+  }
+  .legend-dot {
+    width: 12px; height: 10px; border-radius: 3px;
+  }
+  .legend-dot.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.2);
+  }
+  .legend-dot.rough {
+    border: 1px dashed rgba(167,139,250,0.5);
+    background: rgba(167,139,250,0.2);
+  }
+
+  .note {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(234,179,8,.06);
+    border: 1px solid rgba(234,179,8,.2);
+    border-radius: 6px;
+    font-size: 11px; color: #a8b8d0; line-height: 1.7;
+  }
+  .note strong { color: var(--phase1); }
+  .note.p2 { background: rgba(34,197,94,.06); border-color: rgba(34,197,94,.2); }
+  .note.p2 strong { color: var(--phase2); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Web学習 スケジュール（2026年6月〜）</h1>
+  <p>入口クリア後の本ゴールへ — AIと協働して楽しい・役に立つ・便利なものを作る</p>
+</header>
+
+<div class="phases">
+  <div class="phase-card p1">
+    <div class="lbl">Phase 1 — 17日間</div>
+    <h3>景色を見る</h3>
+    <p>フレームワークを順に覗いて<br>発想を広げる（Astro / Svelte / React + 任意で Vue）</p>
+    <span class="dl">6/1 〜 6/17</span>
+  </div>
+  <div class="phase-card pt">
+    <div class="lbl">移動期間 — 7日間</div>
+    <h3>スマホ継続学習</h3>
+    <p>ドキュメント斜め読み・<br>Phase 2 構想を頭の中で温める</p>
+    <span class="dl">6/18 〜 6/24</span>
+  </div>
+  <div class="phase-card p2">
+    <div class="lbl">Phase 2 — 6日間＋7月以降</div>
+    <h3>プロジェクト開始</h3>
+    <p>AIと協働して<br>何かを作る</p>
+    <span class="dl">6/25 〜</span>
+  </div>
+</div>
+
+<div class="gantt-wrap">
+  <div class="gantt-title">ガントチャート（2026年6月〜8月）</div>
+  <div class="gantt-scroll">
+    <div class="gantt-inner" id="gantt-inner">
+      <div class="date-header">
+        <div class="date-label-spacer"></div>
+        <div class="date-ticks" id="date-ticks"></div>
+      </div>
+      <div id="bands"></div>
+      <div id="tasks" style="position:relative"></div>
+      <div class="ms-row" id="ms-row">
+        <div class="task-label" style="font-size:10px;color:var(--accent);font-weight:700;">節目</div>
+        <div class="ms-track" id="ms-track"></div>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(234,179,8,0.7)"></div>Phase 1 — 景色を見る</div>
+    <div class="legend-item"><div class="legend-dot dashed"></div>移動期間・並行作業</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(34,197,94,0.7)"></div>Phase 2 — プロジェクト</div>
+    <div class="legend-item"><div class="legend-dot rough"></div>7月以降（ラフ）</div>
+    <div class="legend-item" style="color:var(--accent)">│ 今日</div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>6/18〜6/24（出張）:</strong> PCなし。スマホ＋claude.aiでドキュメント斜め読み・Phase 2 構想を温める。
+</div>
+
+<div class="note p2">
+  <strong>Phase 2 の方向性:</strong><br>
+  Phase 1（景色を見る）と移動期間（熟成）を経て、Phase 2 の冒頭で「何を作るか」を決定する。<br>
+  候補：初心者がHTML/CSS/JSを学ぶための学習ツール（自分の学習の復習を兼ねる）。Phase 1 を踏まえて変更の可能性あり。<br>
+  技術選定（素のJS or フレームワーク）も Phase 2 冒頭で決める。
+</div>
+
+<script>
+const START  = new Date('2026-06-01');
+const END    = new Date('2026-08-31');
+const TOTAL  = Math.round((END - START) / 86400000) + 1;
+
+function dayOf(dateStr) {
+  return Math.round((new Date(dateStr) - START) / 86400000);
+}
+function pct(day) {
+  return (day / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+function widthPct(startStr, endStr) {
+  const days = Math.round((new Date(endStr) - new Date(startStr)) / 86400000) + 1;
+  return (days / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+
+/* ── 日付ティック ── */
+const tickEl = document.getElementById('date-ticks');
+const monthStarts = [
+  { d: '2026-06-01', label: 'JUN' },
+  { d: '2026-07-01', label: 'JUL' },
+  { d: '2026-08-01', label: 'AUG' },
+];
+monthStarts.forEach(m => {
+  const el = document.createElement('div');
+  el.className = 'tick month';
+  el.style.left = pct(dayOf(m.d));
+  el.textContent = m.label;
+  tickEl.appendChild(el);
+});
+for (let d = 7; d < TOTAL; d += 7) {
+  const date = new Date(START.getTime() + d * 86400000);
+  const mo = date.getMonth() + 1;
+  const da = date.getDate();
+  if (da <= 3) continue;
+  const el = document.createElement('div');
+  el.className = 'tick';
+  el.style.left = pct(d);
+  el.textContent = `${mo}/${da}`;
+  tickEl.appendChild(el);
+}
+
+/* ── グリッド線 ── */
+function addGridLines(container) {
+  const grid = document.createElement('div');
+  grid.className = 'grid-lines';
+  grid.style.cssText = 'position:absolute;top:0;bottom:0;left:0;right:0;pointer-events:none;';
+  for (let d = 7; d < TOTAL; d += 7) {
+    const line = document.createElement('div');
+    line.className = 'grid-line';
+    line.style.left = pct(d);
+    grid.appendChild(line);
+  }
+  monthStarts.forEach(m => {
+    const line = document.createElement('div');
+    line.className = 'grid-line month-line';
+    line.style.left = pct(dayOf(m.d));
+    grid.appendChild(line);
+  });
+  container.style.position = 'relative';
+  container.insertBefore(grid, container.firstChild);
+}
+
+/* ── Phase帯 ── */
+const bands = [
+  { start: '2026-06-01', end: '2026-06-17', color: 'rgba(234,179,8,0.07)',  label: 'Phase 1', textColor: '#eab308' },
+  { start: '2026-06-18', end: '2026-06-24', color: 'rgba(107,122,153,0.07)', label: '移動',    textColor: '#9aa9c4' },
+  { start: '2026-06-25', end: '2026-08-31', color: 'rgba(34,197,94,0.06)',  label: 'Phase 2', textColor: '#22c55e' },
+];
+const bandsEl = document.getElementById('bands');
+const bandRow = document.createElement('div');
+bandRow.className = 'band-row';
+const bandSpacer = document.createElement('div');
+bandSpacer.className = 'band-label';
+const bandTrack = document.createElement('div');
+bandTrack.className = 'band-track';
+bandTrack.style.cssText = 'flex:1;position:relative;height:24px;';
+bands.forEach(b => {
+  const el = document.createElement('div');
+  el.className = 'band';
+  el.style.left  = pct(dayOf(b.start));
+  el.style.width = widthPct(b.start, b.end);
+  el.style.background = b.color;
+  el.style.color = b.textColor;
+  el.style.borderTop = `1px solid ${b.textColor}33`;
+  el.textContent = b.label;
+  bandTrack.appendChild(el);
+});
+bandRow.appendChild(bandSpacer);
+bandRow.appendChild(bandTrack);
+bandsEl.appendChild(bandRow);
+
+/* ── タスク ── */
+const TODAY = '2026-06-01';
+const tasks = [
+  // Phase 1 — 景色を見る
+  { label: 'Astro: 概要・ドキュメント',         start: '2026-06-01', end: '2026-06-01', bg: 'rgba(234,179,8,0.55)',  fg: '#1a1200' },
+  { label: 'Astro: チュートリアル＋小さな例',    start: '2026-06-02', end: '2026-06-04', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
+  { label: 'Svelte: 概要・ドキュメント',         start: '2026-06-05', end: '2026-06-05', bg: 'rgba(234,179,8,0.55)',  fg: '#1a1200' },
+  { label: 'Svelte: チュートリアル＋小さな例',   start: '2026-06-06', end: '2026-06-08', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
+  { label: 'React: 概要・ドキュメント',          start: '2026-06-09', end: '2026-06-09', bg: 'rgba(234,179,8,0.55)',  fg: '#1a1200' },
+  { label: 'React: チュートリアル＋小さな例',    start: '2026-06-10', end: '2026-06-13', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
+  { label: '既存Webアプリ・学習ツール観察',     start: '2026-06-01', end: '2026-06-17', bg: 'rgba(34,211,238,0.55)', fg: '#001a1f' },
+  { label: 'Vue 入門（任意・予備）',            start: '2026-06-14', end: '2026-06-17', dashed: true },
+  { label: 'フレームワーク比較メモ',             start: '2026-06-15', end: '2026-06-17', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200' },
+
+  // 移動期間
+  { label: 'スマホ継続学習（出張）',             start: '2026-06-18', end: '2026-06-24', dashed: true },
+  { label: 'Phase 2 構想ノート',                 start: '2026-06-18', end: '2026-06-24', dashed: true },
+
+  // Phase 2 — 6月分
+  { label: '作るもの決定',                       start: '2026-06-25', end: '2026-06-26', bg: 'rgba(34,197,94,0.75)',  fg: 'white' },
+  { label: '技術選定',                          start: '2026-06-26', end: '2026-06-27', bg: 'rgba(34,197,94,0.75)',  fg: 'white' },
+  { label: '初期実装',                          start: '2026-06-27', end: '2026-06-30', bg: 'rgba(34,197,94,0.75)',  fg: 'white' },
+
+  // 7月以降（ラフ）
+  { label: 'Phase 2 プロジェクト本格化',          start: '2026-07-01', end: '2026-07-31', rough: true },
+  { label: '振り返り・次テーマ検討',              start: '2026-08-01', end: '2026-08-07', rough: true },
+  { label: '次の探索/プロジェクト',                start: '2026-08-08', end: '2026-08-31', rough: true },
+];
+
+const tasksEl = document.getElementById('tasks');
+addGridLines(tasksEl);
+
+/* ── 今日の縦線 ── */
+const ganttInner = document.getElementById('gantt-inner');
+ganttInner.style.position = 'relative';
+const todayDay = dayOf(TODAY);
+if (todayDay >= 0 && todayDay < TOTAL) {
+  const todayFrac = todayDay / (TOTAL - 1);
+  const todayLeft = `calc(${(210 * (1 - todayFrac)).toFixed(1)}px + ${(todayFrac * 100).toFixed(3)}%)`;
+
+  const todayLine = document.createElement('div');
+  todayLine.style.cssText = `position:absolute;left:${todayLeft};top:44px;bottom:0;width:2px;background:#22d3ee;opacity:0.7;pointer-events:none;z-index:10;transform:translateX(-50%);`;
+
+  const todayLbl = document.createElement('div');
+  const td = new Date(TODAY);
+  todayLbl.style.cssText = `position:absolute;left:${todayLeft};top:26px;font-size:9px;font-weight:700;color:#22d3ee;font-family:'JetBrains Mono',monospace;white-space:nowrap;transform:translateX(-50%);background:var(--surface);padding:1px 4px;border-radius:3px;z-index:11;`;
+  todayLbl.textContent = `今日 ${td.getMonth()+1}/${td.getDate()}`;
+
+  ganttInner.appendChild(todayLine);
+  ganttInner.appendChild(todayLbl);
+}
+
+tasks.forEach(t => {
+  const row = document.createElement('div');
+  row.className = 'task-row';
+
+  const lbl = document.createElement('div');
+  lbl.className = 'task-label';
+  lbl.textContent = t.label;
+
+  const track = document.createElement('div');
+  track.className = 'task-track';
+
+  const bar = document.createElement('div');
+  if (t.rough) {
+    bar.className = 'task-bar rough';
+  } else if (t.dashed) {
+    bar.className = 'task-bar dashed';
+  } else {
+    bar.className = 'task-bar';
+    bar.style.background = t.bg;
+    bar.style.color = t.fg;
+  }
+  bar.style.left  = pct(dayOf(t.start));
+  bar.style.width = widthPct(t.start, t.end);
+  bar.textContent = t.label;
+
+  track.appendChild(bar);
+  row.appendChild(lbl);
+  row.appendChild(track);
+  tasksEl.appendChild(row);
+});
+
+/* ── マイルストーン ── */
+const milestones = [
+  { date: '2026-06-17', label: 'Phase 1 完了', color: '#eab308' },
+  { date: '2026-06-24', label: '移動期間 終', color: '#9aa9c4' },
+  { date: '2026-06-30', label: 'Phase 2 開始', color: '#22c55e' },
+  { date: '2026-08-07', label: '中間振り返り', color: '#a78bfa' },
+  { date: '2026-08-31', label: '次区切り',    color: '#a78bfa' },
+];
+
+const msTrack = document.getElementById('ms-track');
+milestones.forEach(m => {
+  const flag = document.createElement('div');
+  flag.className = 'ms-flag';
+  flag.style.left = pct(dayOf(m.date));
+
+  const diamond = document.createElement('div');
+  diamond.className = 'ms-diamond';
+  diamond.style.borderColor = m.color;
+
+  const text = document.createElement('div');
+  text.className = 'ms-text';
+  text.textContent = m.label;
+  text.style.color = m.color;
+
+  flag.appendChild(diamond);
+  flag.appendChild(text);
+  msTrack.appendChild(flag);
+});
+</script>
+</body>
+</html>

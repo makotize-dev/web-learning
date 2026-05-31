@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習スケジュール（4-5月・完結）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --surface2: #1e2330;
+    --border: #2a3045;
+    --text: #e2e8f0;
+    --muted: #6b7a99;
+    --accent: #22d3ee;
+    --html: #f97316;
+    --css: #3b82f6;
+    --js: #eab308;
+    --green: #22c55e;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  header p { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+  /* Level Cards */
+  .levels {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .level-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 180px;
+  }
+  .level-card .lbl {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .level-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .level-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .level-card nav a {
+    font-size: 9px;
+    color: white;
+    text-decoration: none;
+  }
+  .level-card .dl {
+    margin-top: 8px; font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px; border-radius: 4px; display: inline-block;
+  }
+  .la .lbl, .la .dl { color: var(--html); }
+  .la .dl { background: rgba(249,115,22,.12); }
+  .achieved { border-color: var(--green); position: relative; }
+  .achieved::after {
+    content: '✓ 達成';
+    position: absolute; top: 12px; right: 12px;
+    font-size: 11px; font-weight: 700;
+    color: var(--green);
+    background: rgba(34,197,94,.12);
+    padding: 2px 8px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .lb .lbl, .lb .dl { color: var(--css); }
+  .lb .dl { background: rgba(59,130,246,.12); }
+  .lc .lbl, .lc .dl { color: var(--js); }
+  .lc .dl { background: rgba(234,179,8,.12); }
+
+  /* Gantt container */
+  .gantt-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .gantt-title {
+    padding: 14px 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .gantt-scroll {
+    overflow-x: auto;
+    padding: 20px 20px 20px 0;
+  }
+  .gantt-inner {
+    min-width: 1100px;
+    position: relative;
+  }
+
+  /* Level bands */
+  .band-row {
+    display: flex;
+    align-items: stretch;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+  .band-label {
+    width: 210px;
+    flex-shrink: 0;
+  }
+  .band-track {
+    flex: 1;
+    position: relative;
+  }
+  .band {
+    position: absolute;
+    top: 0; bottom: 0;
+    border-radius: 4px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  /* Date header */
+  .date-header {
+    display: flex;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .date-label-spacer { width: 210px; flex-shrink: 0; }
+  .date-ticks {
+    flex: 1;
+    position: relative;
+    height: 20px;
+  }
+  .tick {
+    position: absolute;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .tick.month {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+  }
+
+  /* Grid lines */
+  .grid-lines {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    pointer-events: none;
+  }
+  .grid-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+    opacity: 0.4;
+  }
+  .grid-line.month-line {
+    background: var(--border);
+    opacity: 0.8;
+  }
+
+  /* Task rows */
+  .task-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    height: 28px;
+  }
+  .task-label {
+    width: 210px;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    padding-right: 14px;
+  }
+  .task-track {
+    flex: 1;
+    height: 28px;
+    position: relative;
+  }
+  .task-bar {
+    position: absolute;
+    top: 3px; bottom: 3px;
+    border-radius: 5px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+    font-size: 10px; font-weight: 600;
+    white-space: nowrap; overflow: hidden;
+    min-width: 4px;
+  }
+  .task-bar.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.15) !important;
+    color: var(--muted) !important;
+  }
+
+  /* Milestone row */
+  .ms-row {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    margin-top: 4px;
+  }
+  .ms-track {
+    flex: 1;
+    position: relative;
+    height: 32px;
+  }
+  .ms-flag {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .ms-diamond {
+    width: 10px; height: 10px;
+    border: 2px solid;
+    transform: rotate(45deg);
+    background: var(--bg);
+  }
+  .ms-text {
+    font-size: 10px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 18px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center;
+    gap: 6px; font-size: 11px; color: var(--muted);
+  }
+  .legend-dot {
+    width: 12px; height: 10px; border-radius: 3px;
+  }
+  .legend-dot.dashed {
+    border: 1px dashed rgba(107,122,153,0.6);
+    background: rgba(107,122,153,0.2);
+  }
+  .legend-dot.done-dot {
+    background: repeating-linear-gradient(
+      45deg, rgba(34,197,94,0.5), rgba(34,197,94,0.5) 3px,
+      rgba(34,197,94,0.15) 3px, rgba(34,197,94,0.15) 6px
+    );
+    border: 1px solid rgba(34,197,94,0.5);
+  }
+
+  /* 今日の縦線 */
+  .today-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #22d3ee;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .today-label {
+    position: absolute;
+    top: -18px;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: #22d3ee;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .note {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(234,179,8,.06);
+    border: 1px solid rgba(234,179,8,.2);
+    border-radius: 6px;
+    font-size: 11px; color: #a8b8d0; line-height: 1.7;
+  }
+  .note strong { color: var(--js); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Web学習 スケジュール（2026年4月〜5月・完結）</h1>
+  <p>HTML → CSS → JS の段階的学習ロードマップ ／ Level A〜C 達成・5/31「JS×AI」ゴール達成</p>
+</header>
+
+<div class="levels">
+  <div class="level-card la achieved">
+    <div class="lbl">Level A — 1ヶ月</div>
+    <h3>テンプレートをカスタマイズ</h3>
+    <p>文字・色・画像を差し替えて<br>自分のページを作れる</p>
+    <span class="dl">4/6 〜 4/20 達成</span>
+  </div>
+  <div class="level-card lb achieved">
+    <div class="lbl">Level B — 約6週間</div>
+    <h3>ゼロからページを書く</h3>
+    <p>テンプレートなしでシンプルな<br>ページを構築できる
+      <nav>
+        <a href="profile.html">プロフィール</a>
+        <a href="contact.html">問い合わせフォーム</a>
+      </nav>
+    </p>
+    <span class="dl">4/21 〜 4/28 達成</span>
+  </div>
+  <div class="level-card lc achieved">
+    <div class="lbl">Level C — マイルストーン式</div>
+    <h3>読んで・指示して・理解する</h3>
+    <p>AIへの指示・テンプレート加工・<br>コードを読んで説明できる</p>
+    <span class="dl">4/29 〜 5/31 達成</span>
+  </div>
+</div>
+
+<div class="gantt-wrap">
+  <div class="gantt-title">ガントチャート（2026年4月〜5月）</div>
+  <div class="gantt-scroll">
+    <div class="gantt-inner" id="gantt-inner">
+      <!-- 日付ヘッダー -->
+      <div class="date-header">
+        <div class="date-label-spacer"></div>
+        <div class="date-ticks" id="date-ticks"></div>
+      </div>
+      <!-- Level帯 -->
+      <div id="bands"></div>
+      <!-- グリッド線（タスクの後ろに描画するためCSSで重ねる） -->
+      <!-- タスク行 -->
+      <div id="tasks" style="position:relative"></div>
+      <!-- マイルストーン -->
+      <div class="ms-row" id="ms-row">
+        <div class="task-label" style="font-size:10px;color:var(--accent);font-weight:700;">達成目標</div>
+        <div class="ms-track" id="ms-track"></div>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(249,115,22,0.7)"></div>HTML</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(59,130,246,0.7)"></div>CSS</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(234,179,8,0.7)"></div>JavaScript</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(34,197,94,0.7)"></div>実践</div>
+    <div class="legend-item"><div class="legend-dot dashed"></div>スマホ学習（出張）</div>
+    <div class="legend-item"><div class="legend-dot done-dot"></div>完了済み</div>
+    <div class="legend-item" style="color:var(--accent)">│ 今日</div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>4/9〜4/14（出張）:</strong> PCなし。スマホ＋claude.aiで概念学習・コード読み込みを継続。
+</div>
+
+<div class="note">
+  <strong>5/31ゴール「JS×AI」の具体的な達成基準:</strong><br>
+  ① JSコードを読んで実行を1行ずつ追える（各行のあと変数に何が入っているか・次にどの行が動くかを説明できる）— 土台<br>
+  ② AIが書いたJSを読んで意図通りか自分で確認できる（予想→検証し、違っていたら指摘できる）<br>
+  ③ 作りたいJSの動きを、AIが実装できる粒度で具体的に説明・指示できる<br>
+  核心は①。実行を追えれば②③も成立する。
+</div>
+
+<script>
+const START  = new Date('2026-04-01');
+const END    = new Date('2026-05-31');
+const TOTAL  = Math.round((END - START) / 86400000) + 1;
+
+function dayOf(dateStr) {
+  return Math.round((new Date(dateStr) - START) / 86400000);
+}
+function pct(day) {
+  return (day / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+function widthPct(startStr, endStr) {
+  const days = Math.round((new Date(endStr) - new Date(startStr)) / 86400000) + 1;
+  return (days / (TOTAL - 1) * 100).toFixed(3) + '%';
+}
+
+/* ── 日付ティック ── */
+const tickEl = document.getElementById('date-ticks');
+// 月の初日
+const monthStarts = [
+  { d: '2026-04-01', label: 'APR' },
+  { d: '2026-05-01', label: 'MAY' },
+];
+monthStarts.forEach(m => {
+  const el = document.createElement('div');
+  el.className = 'tick month';
+  el.style.left = pct(dayOf(m.d));
+  el.textContent = m.label;
+  tickEl.appendChild(el);
+});
+// 週ごとの日付（月曜または7日刻み）
+for (let d = 7; d < TOTAL; d += 7) {
+  const date = new Date(START.getTime() + d * 86400000);
+  const mo = date.getMonth() + 1;
+  const da = date.getDate();
+  // 月初と重なったらスキップ
+  if (da <= 3) continue;
+  const el = document.createElement('div');
+  el.className = 'tick';
+  el.style.left = pct(d);
+  el.textContent = `${mo}/${da}`;
+  tickEl.appendChild(el);
+}
+
+/* ── グリッド線をタスクエリアに追加 ── */
+function addGridLines(container) {
+  const grid = document.createElement('div');
+  grid.className = 'grid-lines';
+  grid.style.cssText = 'position:absolute;top:0;bottom:0;left:0;right:0;pointer-events:none;';
+  // 週線
+  for (let d = 7; d < TOTAL; d += 7) {
+    const line = document.createElement('div');
+    line.className = 'grid-line';
+    line.style.left = pct(d);
+    grid.appendChild(line);
+  }
+  // 月線
+  monthStarts.forEach(m => {
+    const line = document.createElement('div');
+    line.className = 'grid-line month-line';
+    line.style.left = pct(dayOf(m.d));
+    grid.appendChild(line);
+  });
+  container.style.position = 'relative';
+  container.insertBefore(grid, container.firstChild);
+}
+
+/* ── Level帯 ── */
+const bands = [
+  { start: '2026-04-01', end: '2026-04-30', color: 'rgba(249,115,22,0.07)', label: 'Level A', textColor: '#f97316' },
+  { start: '2026-04-21', end: '2026-04-28', color: 'rgba(59,130,246,0.07)',  label: 'Level B', textColor: '#3b82f6' },
+  { start: '2026-04-29', end: '2026-05-31', color: 'rgba(234,179,8,0.07)',   label: 'Level C', textColor: '#eab308' },
+];
+const bandsEl = document.getElementById('bands');
+const bandRow = document.createElement('div');
+bandRow.className = 'band-row';
+const bandSpacer = document.createElement('div');
+bandSpacer.className = 'band-label';
+const bandTrack = document.createElement('div');
+bandTrack.className = 'band-track';
+bandTrack.style.cssText = 'flex:1;position:relative;height:24px;';
+bands.forEach(b => {
+  const el = document.createElement('div');
+  el.className = 'band';
+  el.style.left  = pct(dayOf(b.start));
+  el.style.width = widthPct(b.start, b.end);
+  el.style.background = b.color;
+  el.style.color = b.textColor;
+  el.style.borderTop = `1px solid ${b.textColor}33`;
+  el.textContent = b.label;
+  bandTrack.appendChild(el);
+});
+bandRow.appendChild(bandSpacer);
+bandRow.appendChild(bandTrack);
+bandsEl.appendChild(bandRow);
+
+/* ── タスク ── */
+const TODAY = '2026-05-31';
+const tasks = [
+  // ── 完了済み（Level A）──
+  { label: 'HTML — 構造（PC）',           start: '2026-04-06', end: '2026-04-08', bg: 'rgba(249,115,22,0.75)', fg: 'white', done: true },
+  { label: 'スマホ学習（出張）',           start: '2026-04-09', end: '2026-04-14', bg: '', fg: '', dashed: true, done: true },
+  { label: 'CSS・JS概念 + HTML応用',       start: '2026-04-15', end: '2026-04-19', bg: 'rgba(249,115,22,0.75)', fg: 'white', done: true },
+  { label: '実践 — profile.html制作',      start: '2026-04-15', end: '2026-04-20', bg: 'rgba(34,197,94,0.75)',  fg: 'white', done: true },
+  // ── 完了済み（Level B）──
+  { label: 'CSS Grid・レスポンシブ',        start: '2026-04-21', end: '2026-04-22', bg: 'rgba(59,130,246,0.75)', fg: 'white', done: true },
+  { label: '複数ページ構成・フォーム',      start: '2026-04-23', end: '2026-04-25', bg: 'rgba(59,130,246,0.75)', fg: 'white', done: true },
+  { label: 'CSSトランジション',             start: '2026-04-26', end: '2026-04-26', bg: 'rgba(59,130,246,0.75)', fg: 'white', done: true },
+  { label: '実践 — contact.html制作',      start: '2026-04-26', end: '2026-04-28', bg: 'rgba(34,197,94,0.75)',  fg: 'white', done: true },
+  // ── 完了済み（Level C）──
+  { label: 'JS — 応用・非同期処理',        start: '2026-04-29', end: '2026-04-29', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
+  { label: 'CSS — アニメーション',         start: '2026-04-29', end: '2026-05-02', bg: 'rgba(59,130,246,0.75)', fg: 'white',   done: true },
+  { label: '実践 — prices.html制作',       start: '2026-04-30', end: '2026-05-03', bg: 'rgba(34,197,94,0.75)',  fg: 'white',   done: true },
+  // ── Level C（マイルストーン式）──
+  { label: 'prices.html グラフ実装（M3/M4練習）', start: '2026-05-04', end: '2026-05-08', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
+  { label: 'テンプレート加工練習（M1/M2）',    start: '2026-05-09', end: '2026-05-12', bg: 'rgba(59,130,246,0.75)', fg: 'white',   done: true },
+  { label: '振り返り・方向決め',               start: '2026-05-13', end: '2026-05-13', bg: 'rgba(150,150,150,0.6)', fg: 'white',   done: true },
+  { label: 'Chart.js（ライブラリ入門）',       start: '2026-05-14', end: '2026-05-16', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
+  // ── 完了済み（Level C 仕上げ）──
+  { label: 'JS文法（実行を追う練習）',         start: '2026-05-17', end: '2026-05-25', bg: 'rgba(234,179,8,0.85)',  fg: '#1a1200', done: true },
+  { label: '実コード読み・AI協働',              start: '2026-05-26', end: '2026-05-31', bg: 'rgba(34,197,94,0.75)',  fg: 'white',   done: true },
+];
+
+const tasksEl = document.getElementById('tasks');
+addGridLines(tasksEl);
+
+// 今日の縦線 — gantt-innerに追加してラベル列(210px)を考慮した位置に配置
+const ganttInner = document.getElementById('gantt-inner');
+ganttInner.style.position = 'relative';
+const todayFrac = dayOf(TODAY) / (TOTAL - 1);
+const todayLeft = `calc(${(210 * (1 - todayFrac)).toFixed(1)}px + ${(todayFrac * 100).toFixed(3)}%)`;
+
+const todayLine = document.createElement('div');
+todayLine.style.cssText = `position:absolute;left:${todayLeft};top:44px;bottom:0;width:2px;background:#22d3ee;opacity:0.7;pointer-events:none;z-index:10;transform:translateX(-50%);`;
+
+const todayLbl = document.createElement('div');
+todayLbl.style.cssText = `position:absolute;left:${todayLeft};top:26px;font-size:9px;font-weight:700;color:#22d3ee;font-family:'JetBrains Mono',monospace;white-space:nowrap;transform:translateX(-50%);background:var(--surface);padding:1px 4px;border-radius:3px;z-index:11;`;
+todayLbl.textContent = '達成 5/31';
+
+ganttInner.appendChild(todayLine);
+ganttInner.appendChild(todayLbl);
+
+tasks.forEach(t => {
+  const row = document.createElement('div');
+  row.className = 'task-row';
+
+  const lbl = document.createElement('div');
+  lbl.className = 'task-label';
+  lbl.textContent = t.done ? '✓ ' + t.label : t.label;
+  if (t.done) lbl.style.color = 'var(--green)';
+
+  const track = document.createElement('div');
+  track.className = 'task-track';
+
+  const bar = document.createElement('div');
+  if (t.dashed) {
+    bar.className = 'task-bar dashed';
+  } else if (t.done) {
+    bar.className = 'task-bar';
+    bar.style.background = 'repeating-linear-gradient(45deg,' +
+      t.bg + ',' + t.bg + ' 6px,' +
+      t.bg.replace(/[\d.]+\)$/, '0.3)') + ' 6px,' +
+      t.bg.replace(/[\d.]+\)$/, '0.3)') + ' 12px)';
+    bar.style.color = t.fg;
+    bar.style.border = '1px solid rgba(34,197,94,0.5)';
+  } else {
+    bar.className = 'task-bar';
+    bar.style.background = t.bg;
+    bar.style.color = t.fg;
+  }
+  bar.style.left  = pct(dayOf(t.start));
+  bar.style.width = widthPct(t.start, t.end);
+  bar.textContent = t.label;
+
+  track.appendChild(bar);
+  row.appendChild(lbl);
+  row.appendChild(track);
+  tasksEl.appendChild(row);
+});
+
+/* ── マイルストーン ── */
+const milestones = [
+  { date: '2026-04-20', label: 'Level A', color: '#f97316' },
+  { date: '2026-04-28', label: 'Level B', color: '#3b82f6' },
+  { date: '2026-05-06', label: 'M3 ✓',    color: '#22c55e' },
+  { date: '2026-05-08', label: 'M4 ✓',    color: '#22c55e' },
+  { date: '2026-05-12', label: 'M1/M2 ✓', color: '#22c55e' },
+  { date: '2026-05-31', label: 'JS×AI',   color: '#22d3ee' },
+];
+
+const msTrack = document.getElementById('ms-track');
+milestones.forEach(m => {
+  const flag = document.createElement('div');
+  flag.className = 'ms-flag';
+  flag.style.left = pct(dayOf(m.date));
+
+  const diamond = document.createElement('div');
+  diamond.className = 'ms-diamond';
+  diamond.style.borderColor = m.color;
+
+  const text = document.createElement('div');
+  text.className = 'ms-text';
+  text.textContent = m.label;
+  text.style.color = m.color;
+
+  flag.appendChild(diamond);
+  flag.appendChild(text);
+  msTrack.appendChild(flag);
+});
+</script>
+</body>
+</html>

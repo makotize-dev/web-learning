@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>グラフ作成に挑戦</title>
+</head>
+<body>
+    <canvas id="myChart"></canvas>
+    <canvas id="pieChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    async function drawLineChart() {
+        const url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=jpy&days=90';
+        const res = await fetch(url);
+        const json = await res.json();
+        const prices = json.prices;
+        const xLabels = prices.map(p => new Date(p[0]).toLocaleDateString('ja-JP'));
+        const yValues = prices.map(p => p[1]);
+
+        const ethUrl = 'https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=jpy&days=90';
+        const ethRes = await fetch(ethUrl);
+        const ethJson = await ethRes.json();
+        const ethPrices = ethJson.prices;
+        const ethValues = ethPrices.map(p => p[1]);
+
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: xLabels,
+                datasets: [{
+                    label: 'BTC価格',
+                    data: yValues,
+                    borderColor: '#f7931a',
+                    backgroundColor: 'rgba(247,147,26,0.2)',
+                    pointRadius: 2,
+                    yAxisID: 'y'
+                }, {
+                    label: 'ETH価格',
+                    data: ethValues,
+                    borderColor: '#627eea',
+                    backgroundColor: 'rgba(98,126,234,0.2)',
+                    pointRadius: 2,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '主要通貨の価格の推移',
+                        font: { size: 18 }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 10000000,
+                        max: 14000000
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 300000,
+                        max: 500000,
+                        grid: { drawOnChartArea: false }
+                    }
+                }
+            }
+        });
+    }
+
+    drawLineChart();
+
+    async function drawPie() {
+        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,solana&vs_currencies=jpy&include_market_cap=true';
+        const res = await fetch(url);
+        const data = await res.json();
+        const caps = [
+            data.bitcoin.jpy_market_cap,
+            data.ethereum.jpy_market_cap,
+            data.ripple.jpy_market_cap,
+            data.solana.jpy_market_cap
+        ];
+        const ctx = document.getElementById('pieChart');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Bitcoin', 'Ethereum', 'XRP', 'Solana'],
+                datasets: [{
+                    data: caps,
+                    backgroundColor: ['#f7931a', '#627eea', '#346aa9', '#9945ff']
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '主要通貨の時価総額',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+    }
+
+    drawPie();
+
+    </script>
+</body>
+</html>
