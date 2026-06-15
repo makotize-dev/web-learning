@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>イマココ ― 4月からの振り返り</title>
+  <style>
+    :root {
+      --bg: #0f1420;
+      --card: #1a2233;
+      --then: #6b7a99;
+      --now: #7dd3fc;
+      --accent: #fbbf24;
+      --text: #e6ecf5;
+      --muted: #9aa9c4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding: 0 16px 64px;
+      max-width: 720px;
+      margin: 0 auto;
+      -webkit-text-size-adjust: 100%;
+    }
+    header {
+      padding: 40px 4px 8px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 4px;
+      letter-spacing: 0.02em;
+    }
+    .date { color: var(--muted); font-size: 0.85rem; margin: 0; }
+
+    .lead {
+      background: linear-gradient(135deg, #1a2233, #161d2b);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 18px 18px;
+      margin: 24px 0;
+      font-size: 1.02rem;
+    }
+    .lead .big { color: var(--accent); font-weight: 700; }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 40px 0 6px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #2a3550;
+    }
+    h2 .sub { display:block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 14px 0;
+      box-shadow: 0 1px 0 #0a0e16;
+    }
+    .card .topic { font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; }
+    .row { display: flex; gap: 10px; margin: 6px 0; }
+    .tag {
+      flex: 0 0 auto;
+      width: 3.4em;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding-top: 3px;
+    }
+    .tag.then { color: var(--then); }
+    .tag.now  { color: var(--now); }
+    .row p { margin: 0; font-size: 0.92rem; }
+    .row.then p { color: var(--muted); }
+
+    .closing {
+      margin-top: 48px;
+      padding: 22px 18px;
+      background: linear-gradient(135deg, #15233a, #1a2233);
+      border-radius: 14px;
+      text-align: center;
+    }
+    .closing .ima { font-size: 1.4rem; font-weight: 800; color: var(--now); letter-spacing: 0.05em; }
+    .closing p { margin: 8px 0 0; color: var(--muted); font-size: 0.92rem; }
+    .next {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+    footer { text-align:center; color: var(--then); font-size: 0.75rem; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>イマココ</h1>
+    <p class="date">4月からの振り返り ／ 出張のおともに</p>
+  </header>
+
+  <div class="lead">
+    なぜ学習を始めたのか、その理由さえ今ではぼんやりしている。
+    でも<span class="big">なぜか毎日欠かさず</span>ここで続けた。
+    その結果、少しずつ進んで、少しずつわかるようになって、<span class="big">イマココ</span>。
+  </div>
+
+  <div class="lead" style="border-left-color: var(--now);">
+    最初は、<b>つまずくことすらできなかった</b>。
+    わからないことが多すぎて、「どこがわからないか」に気づく土台すらなかったから。
+    <br />
+    つまずけるようになったのは ―― <span class="big" style="color:var(--now)">力がついた証拠</span>。
+  </div>
+
+  <h2>わからないまま進んだ → 今ならわかる
+    <span class="sub">4〜5月。つまずきにすらならず、ただ通り過ぎたこと</span>
+  </h2>
+
+  <div class="card">
+    <div class="topic">「DOMツリー」</div>
+    <div class="row then"><span class="tag then">あの時</span><p>「ブラウザはこれをDOMツリーとして解釈します」― 一文がまるごと意味不明。ただ読み飛ばした。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>HTMLが木構造として読み込まれること、と分かる。DevToolsで実物も見た。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">HTML と CSS の役割</div>
+    <div class="row then"><span class="tag then">あの時</span><p>「骨格」「見た目」と言われ、言葉として受け取っただけ。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>HTML＝要素そのものを置く／CSS＝それをどう見せるか。役割の違いで説明できる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">「言われるまま操作する」こと</div>
+    <div class="row then"><span class="tag then">あの時</span><p>意味はわからないが、やっていればそのうち分かるだろうと、ふんふんと手を動かした。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>あの「ふんふん」が土台になっていた。今は自分で予想して、手を動かして確かめられる。</p></div>
+  </div>
+
+  <h2>つまずいた → 乗り越えた
+    <span class="sub">5月後半〜6月。詰まって、考えて、自分で解決したこと</span>
+  </h2>
+
+  <div class="card">
+    <div class="topic">JSの基礎でのつまずき</div>
+    <div class="row then"><span class="tag then">あの時</span><p>else if の順番のワナ／<code>sum + n</code> を <code>sum + 1</code> と読み違える／<code>100*1.1=110.0…1</code> の小数誤差。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>狭い条件を先に。カッコの中を指で押さえて読む。<code>.toFixed</code> で丸める。対処を持っている。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">同名問題（<code>labels: labels</code>）</div>
+    <div class="row then"><span class="tag then">あの時</span><p>同じ名前が役割違いで並び、頭が爆発しかけた。もやもやがイライラに。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>左＝キー・右＝自分の変数、と役割で読める。別名に置き換えれば切り分けられる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">「ふわっとして再現できる気がしない」</div>
+    <div class="row then"><span class="tag then">あの時</span><p>Svelteのカウンター、説明は追えるのに自分では再現できる気がしなかった（受け身）。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>自分で書いて動かしたら腑に落ちた。「型は同じ、中身を入れ替える」で作れる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">「文字を変化させるとは？」</div>
+    <div class="row then"><span class="tag then">あの時</span><p>数字の+1はイメージできるが、文字を「変化させる」がピンとこなかった。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p><code>setX</code> ＝ 新しい値に丸ごと入れ替える関数。数字も文字も同じ動作。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic"><code>count++</code> と <code>setCount</code></div>
+    <div class="row then"><span class="tag then">あの時</span><p>resetを <code>setCount(count = 0)</code> と書いて動かず。なぜ？</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>Reactは直接いじらずsetterに「新しい値」を渡す。<code>setCount(0)</code>。constには代入できない。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">フレームワークは「翻訳」できる</div>
+    <div class="row then"><span class="tag then">あの時</span><p>Svelteと Reactは別物で、ゼロから覚え直すものだと思った。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p><code>{#if}</code>→<code>&&</code>、<code>bind:value</code>→<code>value+onChange</code>。やることは同じ、書き方が違うだけ。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">Astro は「層」が違う</div>
+    <div class="row then"><span class="tag then">あの時</span><p>Astro/Svelte/React は横並びの選択肢だと思っていた。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>自分で調べて気づいた。Astroはサイトの枠、Svelte/Reactを「島」として組み込む関係。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">同じ <code>/</code> でも意味が違う</div>
+    <div class="row then"><span class="tag then">あの時</span><p>/schedule が勝手に起動して混乱。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>URLの区切りの <code>/</code> と、行頭のコマンドの <code>/</code>。「どこに書くか」で役割が変わる。</p></div>
+  </div>
+
+  <div class="closing">
+    <div class="ima">イマココ</div>
+    <p>言われるまま「ふんふん」から、自分で予想して手を動かす学習へ。<br />
+       わかって設計できれば、細部は見返して再現すればいい。</p>
+    <div class="next">次へ → Phase 2「グループ早わかりツール」を作る</div>
+  </div>
+
+  <footer>4月 → 6月 ／ 毎日続けた記録</footer>
+</body>
+</html>
