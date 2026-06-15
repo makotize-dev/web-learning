@@ -6,8 +6,9 @@
   <title>イマココ ― 4月からの振り返り</title>
   <style>
     :root {
-      --bg: #0f1420;
-      --card: #1a2233;
+      --bg: #0b101a;
+      --card: #1f2a40;
+      --card-border: #38496e;
       --then: #6b7a99;
       --now: #7dd3fc;
       --accent: #fbbf24;
@@ -56,10 +57,11 @@
 
     .card {
       background: var(--card);
+      border: 1px solid var(--card-border);
       border-radius: 12px;
       padding: 16px;
       margin: 14px 0;
-      box-shadow: 0 1px 0 #0a0e16;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
     .card .topic { font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; }
     .row { display: flex; gap: 10px; margin: 6px 0; }
