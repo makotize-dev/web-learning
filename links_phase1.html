@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phase 1 リーディングリスト</title>
+  <style>
+    :root {
+      --bg: #eef3fb;
+      --card: #ffffff;
+      --card-border: #c8d6ec;
+      --now: #1d6fd6;
+      --accent: #2563eb;
+      --text: #1a2740;
+      --muted: #51607a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0 auto;
+      max-width: 720px;
+      font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0 16px 64px;
+      -webkit-text-size-adjust: 100%;
+    }
+    header { padding: 40px 4px 4px; }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.85rem; margin: 0; }
+
+    .intro {
+      background: linear-gradient(135deg, #e3edfc, #eef3fb);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 22px 0;
+      font-size: 0.95rem;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      margin: 34px 0 4px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #cdd9ec;
+    }
+    h2 .memo { display:block; font-size:0.76rem; color:var(--muted); font-weight:400; margin-top:2px; }
+
+    a.link {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 13px 14px;
+      margin: 10px 0;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(30,50,90,0.08);
+    }
+    a.link .title { font-weight: 700; color: var(--now); font-size: 0.96rem; }
+    a.link .desc { font-size: 0.86rem; color: var(--muted); margin-top: 3px; }
+    a.link .url { font-size: 0.72rem; color: #8aa0c4; margin-top: 4px; word-break: break-all; }
+
+    footer { text-align:center; color: var(--muted); font-size: 0.75rem; margin-top: 36px; }
+    code { background:#e7eefb; color:#1b3b6f; padding:1px 5px; border-radius:5px; font-size:0.85em; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Phase 1 リーディングリスト</h1>
+    <p class="sub">出張のおとも ／ 次につなげる読み物</p>
+  </header>
+
+  <div class="intro">
+    Phase 1 で覗いた4つの景色を、もう一歩深く。
+    まず<b>公式ドキュメント</b>が一番確かで、しかも読みやすい。
+    自分が作った作例（<code>astro-demo</code> / <code>svelte-demo</code> / <code>react-demo</code>）を思い出しながら読むと入ってくる。
+  </div>
+
+  <h2>土台の復習
+    <span class="memo">迷ったらここ。HTML/CSS/JS のいちばん確かな辞書</span>
+  </h2>
+  <a class="link" href="https://developer.mozilla.org/ja/docs/Web" target="_blank" rel="noopener">
+    <div class="title">MDN Web Docs（日本語）</div>
+    <div class="desc">HTML・CSS・JS の公式リファレンス。用語に迷ったらまずここで引く。</div>
+    <div class="url">developer.mozilla.org/ja/docs/Web</div>
+  </a>
+  <a class="link" href="https://developer.mozilla.org/ja/docs/Web/JavaScript" target="_blank" rel="noopener">
+    <div class="title">MDN ― JavaScript</div>
+    <div class="desc">配列・map・関数・イベントなど、土台でやったことの確認に。</div>
+    <div class="url">developer.mozilla.org/ja/docs/Web/JavaScript</div>
+  </a>
+
+  <h2>Astro
+    <span class="memo">層2＝サイトの枠ぐみ。astro-demo で触った</span>
+  </h2>
+  <a class="link" href="https://docs.astro.build/ja/getting-started/" target="_blank" rel="noopener">
+    <div class="title">Astro 公式ドキュメント（日本語あり）</div>
+    <div class="desc">コンポーネント・ファイルベースルーティング・レイアウト・ビルド。</div>
+    <div class="url">docs.astro.build/ja/getting-started/</div>
+  </a>
+  <a class="link" href="https://docs.astro.build/en/concepts/islands/" target="_blank" rel="noopener">
+    <div class="title">Astro ― アイランド（Islands）</div>
+    <div class="desc">「静的な海に、動く島だけ浮かべる」考え方の出どころ。</div>
+    <div class="url">docs.astro.build/en/concepts/islands/</div>
+  </a>
+
+  <h2>Svelte
+    <span class="memo">層1＝動くUI部品。svelte-demo のカウンター</span>
+  </h2>
+  <a class="link" href="https://svelte.dev/tutorial" target="_blank" rel="noopener">
+    <div class="title">Svelte 公式チュートリアル（手を動かす形式）</div>
+    <div class="desc">ブラウザ上で書いて動かせる。<code>bind:value</code> や <code>{#if}</code> を改めて。</div>
+    <div class="url">svelte.dev/tutorial</div>
+  </a>
+  <a class="link" href="https://svelte.dev/docs" target="_blank" rel="noopener">
+    <div class="title">Svelte 公式ドキュメント</div>
+    <div class="desc">リアクティビティの仕組み、各構文のリファレンス。</div>
+    <div class="url">svelte.dev/docs</div>
+  </a>
+
+  <h2>React
+    <span class="memo">層1＝動くUI部品。react-demo のカウンター</span>
+  </h2>
+  <a class="link" href="https://react.dev/learn" target="_blank" rel="noopener">
+    <div class="title">React 公式 ― Learn React</div>
+    <div class="desc"><code>useState</code>・<code>onClick</code>・<code>&&</code> など、翻訳表の裏づけ。</div>
+    <div class="url">react.dev/learn</div>
+  </a>
+  <a class="link" href="https://react.dev/learn/thinking-in-react" target="_blank" rel="noopener">
+    <div class="title">React ― Thinking in React</div>
+    <div class="desc">「状態をどう設計するか」の考え方。Phase 2 の設計に効く。</div>
+    <div class="url">react.dev/learn/thinking-in-react</div>
+  </a>
+
+  <h2>Vue
+    <span class="memo">層1の4つ目。軽く覗いた（Svelte寄り）</span>
+  </h2>
+  <a class="link" href="https://ja.vuejs.org/guide/introduction.html" target="_blank" rel="noopener">
+    <div class="title">Vue 公式ガイド（日本語）</div>
+    <div class="desc"><code>ref</code>・<code>@click</code>・<code>{{ }}</code>。3つとの違いを見比べる用。</div>
+    <div class="url">ja.vuejs.org/guide/introduction.html</div>
+  </a>
+
+  <h2>道具（ビルド・開発サーバー）
+    <span class="memo">npm run dev / build の裏で動いていたもの</span>
+  </h2>
+  <a class="link" href="https://ja.vitejs.dev/guide/" target="_blank" rel="noopener">
+    <div class="title">Vite 公式ガイド（日本語）</div>
+    <div class="desc">svelte-demo / react-demo の dev サーバー・ビルドの正体。</div>
+    <div class="url">ja.vitejs.dev/guide/</div>
+  </a>
+
+  <footer>Phase 1（6月）／ 出張中はこのリストから1つずつ</footer>
+</body>
+</html>

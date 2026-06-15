@@ -6,14 +6,14 @@
   <title>イマココ ― 4月からの振り返り</title>
   <style>
     :root {
-      --bg: #0b101a;
-      --card: #1f2a40;
-      --card-border: #38496e;
-      --then: #6b7a99;
-      --now: #7dd3fc;
-      --accent: #fbbf24;
-      --text: #e6ecf5;
-      --muted: #9aa9c4;
+      --bg: #eef3fb;
+      --card: #ffffff;
+      --card-border: #c8d6ec;
+      --then: #64748b;
+      --now: #1d6fd6;
+      --accent: #2563eb;
+      --text: #1a2740;
+      --muted: #51607a;
     }
     * { box-sizing: border-box; }
     body {
@@ -38,7 +38,7 @@
     .date { color: var(--muted); font-size: 0.85rem; margin: 0; }
 
     .lead {
-      background: linear-gradient(135deg, #1a2233, #161d2b);
+      background: linear-gradient(135deg, #e3edfc, #eef3fb);
       border-left: 4px solid var(--accent);
       border-radius: 12px;
       padding: 18px 18px;
@@ -51,7 +51,7 @@
       font-size: 1.1rem;
       margin: 40px 0 6px;
       padding-bottom: 8px;
-      border-bottom: 1px solid #2a3550;
+      border-bottom: 1px solid #cdd9ec;
     }
     h2 .sub { display:block; font-size: 0.78rem; color: var(--muted); font-weight: 400; margin-top: 2px; }
 
@@ -61,7 +61,14 @@
       border-radius: 12px;
       padding: 16px;
       margin: 14px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 8px rgba(30,50,90,0.10);
+    }
+    code {
+      background: #e7eefb;
+      color: #1b3b6f;
+      padding: 1px 5px;
+      border-radius: 5px;
+      font-size: 0.86em;
     }
     .card .topic { font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; }
     .row { display: flex; gap: 10px; margin: 6px 0; }
@@ -80,7 +87,8 @@
     .closing {
       margin-top: 48px;
       padding: 22px 18px;
-      background: linear-gradient(135deg, #15233a, #1a2233);
+      background: linear-gradient(135deg, #dbe8fb, #eef3fb);
+      border: 1px solid var(--card-border);
       border-radius: 14px;
       text-align: center;
     }
