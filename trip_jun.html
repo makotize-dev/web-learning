@@ -70,6 +70,15 @@
       border-radius: 5px;
       font-size: 0.86em;
     }
+    .card.todo {
+      border-style: dashed;
+      border-color: #b6c6e2;
+      background: #f4f8fd;
+      box-shadow: none;
+    }
+    .card.todo .topic { color: var(--muted); }
+    .todo-note { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); }
+    .todo-note .pin { color: var(--accent); font-weight: 700; }
     .card .topic { font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; }
     .row { display: flex; gap: 10px; margin: 6px 0; }
     .tag {
@@ -126,15 +135,51 @@
   </h2>
 
   <div class="card">
+    <div class="topic">タグって何？ 意味って何？</div>
+    <div class="row then"><span class="tag then">あの時</span><p>「タグ」って何？「意味」って何？ 意味のあるタグと意味のないタグの区別も、ピンとこなかった。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>タグ＝要素を表す印。意味のあるタグ（<code>h1</code>・<code>nav</code>・<code>form</code>…）＝役割を持つ／意味のないタグ（<code>div</code>・<code>span</code>）＝ただの入れ物。意味で構造を説明できる。</p></div>
+  </div>
+
+  <div class="card">
     <div class="topic">「DOMツリー」</div>
     <div class="row then"><span class="tag then">あの時</span><p>「ブラウザはこれをDOMツリーとして解釈します」― 一文がまるごと意味不明。ただ読み飛ばした。</p></div>
     <div class="row now"><span class="tag now">いま</span><p>HTMLが木構造として読み込まれること、と分かる。DevToolsで実物も見た。</p></div>
   </div>
 
   <div class="card">
-    <div class="topic">HTML と CSS の役割</div>
-    <div class="row then"><span class="tag then">あの時</span><p>「骨格」「見た目」と言われ、言葉として受け取っただけ。</p></div>
-    <div class="row now"><span class="tag now">いま</span><p>HTML＝要素そのものを置く／CSS＝それをどう見せるか。役割の違いで説明できる。</p></div>
+    <div class="topic">ここから「.（ドット）」が出てきた ― セレクタ</div>
+    <div class="row then"><span class="tag then">あの時</span><p>CSSで急に「.」が出てきた。セレクタって、何を指しているのか分からなかった。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>「.」は class を指す目印。セレクタ＝「どの要素に効かせるか」の指定。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">Grid？ 親子？</div>
+    <div class="row then"><span class="tag then">あの時</span><p>Grid の並びがどう決まるのか、「親子」って何か、分からないまま真似た。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>親（まとめる箱）に並べ方を指定し、子（中の要素）が並ぶ。親子の役割で読める。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">フォーム</div>
+    <div class="row then"><span class="tag then">あの時</span><p>フォームが何をしているのか、ぼんやりしていた。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>入力を集めて送るための仕組み（<code>label</code>・<code>input</code>・送信ボタンの役割）。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">トランジション／アニメーション</div>
+    <div class="row then"><span class="tag then">あの時</span><p>動きをつけるコードは、呪文みたいだった。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p><code>transition</code>＝変化をなめらかに／<code>@keyframes</code>＝動きの台本／<code>transform</code>で動かす、と区別できる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">JS：どこの何を、どうしようとしている？</div>
+    <div class="row then"><span class="tag then">あの時</span><p>HTMLやCSSはコードを変えたらすぐ結果が見えるのに、JSは「どこの何を、どうしようとしているのか」が見えなかった。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>JSは手順（手続き）。1行ずつ値を追えば分かる。<code>console.log</code> やデバッガで「見えない実行」を可視化できる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic"><code>.js</code> と JSON と <code>.json</code>（同名問題にも絡む）</div>
+    <div class="row then"><span class="tag then">あの時</span><p>「.js」「json」「.json」「.json()」が似ていて区別がつかず、同名問題ともからんで混乱した。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p><code>.js</code>＝JavaScriptのファイル拡張子／JSON＝データの形式／<code>.json</code>＝JSONファイルの拡張子／<code>.json()</code>＝fetchの返事をJSONとして読むメソッド。別物と区別できる。</p></div>
   </div>
 
   <div class="card">
@@ -193,6 +238,21 @@
     <div class="topic">同じ <code>/</code> でも意味が違う</div>
     <div class="row then"><span class="tag then">あの時</span><p>/schedule が勝手に起動して混乱。</p></div>
     <div class="row now"><span class="tag now">いま</span><p>URLの区切りの <code>/</code> と、行頭のコマンドの <code>/</code>。「どこに書くか」で役割が変わる。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="topic">ドット記法（<code>data.bitcoin.jpy</code> / <code>project.name</code>）</div>
+    <div class="row then"><span class="tag then">あの時</span><p>なんとなく使えるが、しっかりは説明できなかった（つい昨日まで「まだ途中」だった）。</p></div>
+    <div class="row now"><span class="tag now">いま</span><p>オブジェクト＝名前（キー）と値のペアの集まり。1セットを<b>プロパティ</b>、名前側を<b>キー</b>・値側を<b>プロパティの値</b>と呼ぶ。<code>オブジェクト.キー</code> でそのキーの値を取り出す。値がまたオブジェクトのときは <code>.</code> をつないで、より奥のプロパティまで特定できる。</p></div>
+  </div>
+
+  <h2>まだ途中 ― これから固める
+    <span class="sub">「説明できない」と気づけるのも力。ここはこれから</span>
+  </h2>
+
+  <div class="card todo">
+    <div class="topic">「セレクタ」「プロパティ」の細かい区別</div>
+    <p class="todo-note">オブジェクトの「プロパティ」（名前：値のセット）は固まった。残るは CSS の「プロパティ」「セレクタ」と、同じ言葉が場所で意味が違う点の整理。ここはこれから。</p>
   </div>
 
   <div class="closing">
